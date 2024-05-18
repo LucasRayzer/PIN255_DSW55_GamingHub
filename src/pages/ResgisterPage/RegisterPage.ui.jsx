@@ -18,7 +18,7 @@ export default function RegisterPage() {
 
   const handleRegister = () => {
     // Adicione a lógica de registro aqui
-    navigate('/dashboard'); // Supondo que '/dashboard' seja a rota após registro
+    navigate('/homepage'); // Supondo que '/dashboard' seja a rota após registro
   };
 
   return (

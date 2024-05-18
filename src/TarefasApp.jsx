@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom';
 import LoginPage from './pages/LoginPage/loginPage.ui';
 import RegisterPage from './pages/ResgisterPage/RegisterPage.ui';
+import HomePage from './pages/HomePage/HomePage.ui';
 
 
 
@@ -15,7 +16,7 @@ export default function TarefasApp() {
     <Route path="/" element={<LoginPage />} />
     <Route path="/login" element={<LoginPage />} />
     <Route path="/registro" element={<RegisterPage />} />
-    <Route path="/dashboard" element={<div>Dashboard</div>} />
+    <Route path="/homepage" element={<HomePage/>} />
     </Routes>
     </BrowserRouter>
    

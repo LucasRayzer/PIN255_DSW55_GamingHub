@@ -18,7 +18,7 @@ export default function LoginPage() {
 
   const handleLogin = () => {
     // Adicione a lógica de login aqui
-    navigate('/dashboard'); // Supondo que '/dashboard' seja a rota após login
+    navigate('/homepage'); // Supondo que '/dashboard' seja a rota após login
   };
 
   return (
