@@ -1,48 +1,32 @@
 import styled from 'styled-components';
 
-export const LoginBody = styled.div.attrs({
-  className: "login-body",
+export const RegisterBody = styled.div.attrs({
+  className: "register-body",
 })`
   margin: 0;
   display: flex;
+  height: 100%;
   flex-direction: column;
-  min-height: 100vh;
   border: 1px solid;
   border-color: #000000;
 `;
 
-export const LoginContainer = styled.div.attrs({
-  className: "login-container",
+export const RegisterContainer = styled.div.attrs({
+  className: "register-container",
 })`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex: 1;
+  height: 100vh;
   width: 100%;
   background: url('src/assets/images/BackgroundImage1.png') no-repeat center center;
   background-size: cover;
   background-color: #1A1A1A;
 `;
 
-export const LogoContainer = styled.div.attrs({
-  className: "login-logo-container",
-})`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 50px;
-`;
-
-export const LogoImage = styled.img.attrs({
-  className: "login-logo-image",
-})`
-  display: flex;
-`;
-
-export const LoginHeader = styled.div.attrs({
-  className: "login-header",
+export const RegisterHeader = styled.div.attrs({
+  className: "register-header",
 })`
   padding: 10px 0;
   background-color: #1A1A1A;
@@ -51,8 +35,8 @@ export const LoginHeader = styled.div.attrs({
   border-color: #000000;
 `;
 
-export const LoginTitle = styled.h1.attrs({
-  className: "login-title-header",
+export const RegisterTitle = styled.h1.attrs({
+  className: "register-title-header",
 })`
   padding-left: 40px;
   color: white;
@@ -61,8 +45,8 @@ export const LoginTitle = styled.h1.attrs({
   text-transform: uppercase;
 `;
 
-export const LoginForm = styled.div.attrs({
-  className: "login-form",
+export const RegisterForm = styled.div.attrs({
+  className: "register-form",
 })`
   background-color: rgba(250, 250, 250, 0.603);
   padding: 20px;
@@ -73,8 +57,8 @@ export const LoginForm = styled.div.attrs({
   align-items: center;
 `;
 
-export const LoginInput = styled.input.attrs({
-  className: "login-input",
+export const RegisterInput = styled.input.attrs({
+  className: "register-input",
 })`
   margin: 10px 0;
   padding: 10px;
@@ -83,8 +67,8 @@ export const LoginInput = styled.input.attrs({
   border-radius: 5px;
 `;
 
-export const LoginButton = styled.button.attrs({
-  className: "login-button",
+export const RegisterButton = styled.button.attrs({
+  className: "register-button",
 })`
   padding: 10px 20px;
   margin-top: 10px;
@@ -98,8 +82,8 @@ export const LoginButton = styled.button.attrs({
   }
 `;
 
-export const LoginLink = styled.a.attrs({
-  className: "login-link",
+export const RegisterLink = styled.a.attrs({
+  className: "register-link",
 })`
   margin-top: 10px;
   color: #000000;
@@ -108,3 +92,18 @@ export const LoginLink = styled.a.attrs({
     text-decoration: underline;
   }
 `;
+export const LogoContainer = styled.div.attrs({
+    className: "register-logo-container",
+  })`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 50px;
+  `;
+  
+  export const LogoImage = styled.img.attrs({
+    className: "register-logo-image",
+  })`
+    display: flex;
+  `;
