@@ -75,6 +75,17 @@ export const SteamImage = styled.img.attrs({
     margin-right: 40px;
     cursor: pointer;
   `;
-
+export const RankingBox = styled.div.attrs({
+  className: "ranking-box",
+})`
+  display: flex;
+  background-color: #000000a0;
+  color: white;
+  padding: 10px 50px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 30px;
+`;
 
   
