@@ -15,7 +15,9 @@ import {
   ActionButton, 
   Description, 
   Review, 
-  ReviewText 
+  ReviewText, 
+  GameInfoUp,
+  GameInfoDown
 } from './GameDetailsPage.styles';
 import { NavHeader } from '../../components/HeaderMenu/HeaderMenu.ui';
 
@@ -41,17 +43,22 @@ export default function GameDetailsPage() {
         <ColumnsContainer>
           <LeftColumn>
             <Section>
-              <GameImage src={gameData.image} alt={`${gameData.name} cover`} />
-              <GameInfo>
+                <GameInfoUp>
+                <GameImage src={gameData.image} alt={`${gameData.name} cover`} />
+                    <GameInfo>
                 <SectionTitle>{gameData.name}</SectionTitle>
                 <InfoText>Conquistas: {gameData.completion}</InfoText>
                 <InfoText>Horas jogadas: {gameData.hoursPlayed}</InfoText>
+                </GameInfo>
+                </GameInfoUp>
+             
+              <GameInfoDown>
                 <ActionsContainer>
                   <ActionButton>Adicionar aos Favoritos</ActionButton>
                   <ActionButton>Atribuir Nota</ActionButton>
                   <ActionButton>Resgatar Recompensa</ActionButton>
                 </ActionsContainer>
-              </GameInfo>
+              </GameInfoDown>
             </Section>
           </LeftColumn>
          

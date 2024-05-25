@@ -54,8 +54,8 @@ export const Section = styled.div.attrs({
 export const GameImage = styled.img.attrs({
   className: "game-image"
 })`
-  width: 100px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   margin-bottom: 20px;
 `;
 
@@ -73,6 +73,20 @@ export const GameInfo = styled.div.attrs({
   flex-direction: column;
   gap: 10px;
 `;
+export const GameInfoDown = styled.div.attrs({
+    className: "game-options"
+  })`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  `;
+export const GameInfoUp = styled.div.attrs({
+    className: "game-container-info"
+  })`
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  `;
 
 export const InfoText = styled.div.attrs({
   className: "info-text"
@@ -84,6 +98,7 @@ export const ActionsContainer = styled.div.attrs({
   className: "actions-container"
 })`
   display: flex;
+  flex-direction:column;
   gap: 10px;
   margin-top: 20px;
 `;
@@ -92,7 +107,7 @@ export const ActionButton = styled.button.attrs({
   className: "action-button"
 })`
   padding: 10px;
-  background-color: #070707;
+  background-color: #0000005e;
   color: white;
   border: none;
   border-radius: 4px;
