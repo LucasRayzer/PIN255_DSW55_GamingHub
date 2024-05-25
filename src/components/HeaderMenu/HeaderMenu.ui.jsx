@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { ApelidoTitle, ConfigBlock, ConfigImage, HeaderContainer, HomeHeader, LofOffImage, LogoImage, RankingBox, SteamImage } from "./HeaderMenu.styles";
+import { ApelidoTitle, ConfigBlock, ConfigImage, HeaderContainer, HomeHeader, LibraryImage, LofOffImage, LogoImage, RankingBox, SteamImage } from "./HeaderMenu.styles";
 import { useNavigate } from 'react-router-dom';
+import LibGH from '../../assets/images/LogoGH.png';
+import LibLogo from '../../assets/images/LibLogo.png';
+import SteamLogo from '../../assets/images/SteamLogo.png';
+import ConfigLogo from '../../assets/images/ConfigLogo.png';
+import LogOut from '../../assets/images/LogOut.png';
+
 export function NavHeader() {
         const navigate = useNavigate();
     
@@ -20,9 +26,9 @@ export function NavHeader() {
         <HomeHeader>
         
         <HeaderContainer>
-            
+
             <LogoImage  onClick={() => navigate('/homepage')}
-            src='src/assets/images/LogoGH.png' alt='Logo' />
+            src={LibGH} alt='Logo' />
             <ApelidoTitle>Apelido do Usuário</ApelidoTitle>
      
         </HeaderContainer>
@@ -30,12 +36,14 @@ export function NavHeader() {
                 {` Ranking:  #${ranking}`}
             </RankingBox>
             <ConfigBlock>
-                <SteamImage  onClick={() => navigate('/steamComand')}
-                src='src/assets/images/SteamLogo.png' alt='Steam'/>
+                <LibraryImage onClick={() => navigate('/library')}
+                src={LibLogo} alt='Library'/>
+                <SteamImage  onClick={() => navigate('/SteamComand')}
+                src={SteamLogo} alt='Steam'/>
                 <ConfigImage onClick={() => navigate('/config')}
-                src='src/assets/images/ConfigLogo.png' alt='Steam'/>
+                src={ConfigLogo} alt='Config'/>
                 <LofOffImage onClick={() => navigate('/')}
-                src='src/assets/images/LogOut.png' alt='LogOut'/>
+                src={LogOut} alt='LogOut'/>
             </ConfigBlock>
         </HomeHeader>
     );

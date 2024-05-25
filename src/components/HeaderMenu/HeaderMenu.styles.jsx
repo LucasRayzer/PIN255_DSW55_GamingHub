@@ -67,6 +67,14 @@ export const SteamImage = styled.img.attrs({
     margin-right: 40px;
     cursor: pointer;
   `;
+   export const LibraryImage = styled.img.attrs({
+    className: "home-logo-image",
+  })`
+    display: flex;
+    height:60px;
+    margin-right: 40px;
+    cursor: pointer;
+  `;
   export const LofOffImage = styled.img.attrs({
     className: "home-logoff-image",
   })`
