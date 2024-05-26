@@ -29,7 +29,7 @@ export const LeftColumn = styled.div.attrs({
   className: "left-column"
 })`
   flex: 1;
-  margin-top: 70px;
+  margin-top: 96px;
   padding: 10px;
   border-radius: 8px;
 `;
@@ -48,7 +48,7 @@ export const Section = styled.div.attrs({
 })`
   background-color: #00000053;
   padding: 10px;
-  top: 50px;
+ 
   border-radius: 8px;
 `;
 
@@ -71,7 +71,6 @@ export const TrophySection = styled(Section).attrs({
 export const SectionTitle = styled.h2.attrs({
   className: "section-title"
 })`
-  margin: 0 0 10px 0;
   color: #fff;
 `;
 

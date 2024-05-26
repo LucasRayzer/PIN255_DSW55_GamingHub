@@ -40,7 +40,7 @@ export function NavHeader() {
                 src={LibLogo} alt='Library'/>
                 <SteamImage  onClick={() => navigate('/SteamComand')}
                 src={SteamLogo} alt='Steam'/>
-                <ConfigImage onClick={() => navigate('/config')}
+                <ConfigImage onClick={() => navigate('/settings')}
                 src={ConfigLogo} alt='Config'/>
                 <LofOffImage onClick={() => navigate('/')}
                 src={LogOut} alt='LogOut'/>

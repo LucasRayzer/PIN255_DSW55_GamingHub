@@ -6,6 +6,8 @@ import HomePage from './pages/HomePage/HomePage.ui';
 import LibraryPage from './pages/LibraryPage/LibraryPage.ui';
 
 import GameDetailsPage from './pages/GameDetailsPage/GameDetailsPage.ui';
+import NotePage from './pages/NotePage/NotePage.ui';
+import SettingsPage from './pages/SettingsPage/SettingsPage.ui';
 
 
 export default function TarefasApp() {
@@ -19,8 +21,10 @@ export default function TarefasApp() {
     <Route path="/login" element={<LoginPage />} />
     <Route path="/registro" element={<RegisterPage />} />
     <Route path="/homepage" element={<HomePage/>} />
-    <Route path="/library" element={<LibraryPage/>}></Route>
-    <Route path="/game/:id" element={<GameDetailsPage />} />
+    <Route path="/library" element={<LibraryPage/>}/>
+    <Route path="/game/:id" element={<GameDetailsPage />}/>
+    <Route path="/rate/:id" element={<NotePage/>}/>
+    <Route path="/settings" element={<SettingsPage/>}/>
     </Routes>
     </BrowserRouter>
    

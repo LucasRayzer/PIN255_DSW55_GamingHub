@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { 
   GameDetailsContainer, 
   GameDetailsBodyContainer, 
@@ -34,7 +34,12 @@ const mockGameData = {
 
 export default function GameDetailsPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const gameData = mockGameData; // Aqui você pode buscar os dados reais usando o id
+
+  const handleRateClick = () => {
+    navigate(`/rate/${id}`);
+  };
 
   return (
     <GameDetailsContainer>
@@ -43,25 +48,23 @@ export default function GameDetailsPage() {
         <ColumnsContainer>
           <LeftColumn>
             <Section>
-                <GameInfoUp>
+              <GameInfoUp>
                 <GameImage src={gameData.image} alt={`${gameData.name} cover`} />
-                    <GameInfo>
-                <SectionTitle>{gameData.name}</SectionTitle>
-                <InfoText>Conquistas: {gameData.completion}</InfoText>
-                <InfoText>Horas jogadas: {gameData.hoursPlayed}</InfoText>
+                <GameInfo>
+                  <SectionTitle>{gameData.name}</SectionTitle>
+                  <InfoText>Conquistas: {gameData.completion}</InfoText>
+                  <InfoText>Horas jogadas: {gameData.hoursPlayed}</InfoText>
                 </GameInfo>
-                </GameInfoUp>
-             
+              </GameInfoUp>
               <GameInfoDown>
                 <ActionsContainer>
                   <ActionButton>Adicionar aos Favoritos</ActionButton>
-                  <ActionButton>Atribuir Nota</ActionButton>
+                  <ActionButton onClick={handleRateClick}>Atribuir Nota</ActionButton>
                   <ActionButton>Resgatar Recompensa</ActionButton>
                 </ActionsContainer>
               </GameInfoDown>
             </Section>
           </LeftColumn>
-         
           <RightColumn>
             <Section>
               <SectionTitle>Descrição</SectionTitle>

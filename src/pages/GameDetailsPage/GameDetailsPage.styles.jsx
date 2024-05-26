@@ -56,6 +56,7 @@ export const GameImage = styled.img.attrs({
 })`
   width: 200px;
   height: 200px;
+  border-radius:5px;
   margin-bottom: 20px;
 `;
 

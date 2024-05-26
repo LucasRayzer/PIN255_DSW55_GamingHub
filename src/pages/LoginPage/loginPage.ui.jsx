@@ -13,6 +13,8 @@ import {
   LogoImage
 } from './LoginPage.styles';
 
+
+
 export default function LoginPage() {
   const navigate = useNavigate();
 
