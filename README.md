@@ -1,4 +1,4 @@
-# Projeto interdiscipilinar de DSW e PIN2
+# Projeto interdisciplinar de DSW e PIN2
 
 O atual repositório, contém o código fonte de uma aplicação web, que explora os limites de um projeto denominado GamingHub.
 
