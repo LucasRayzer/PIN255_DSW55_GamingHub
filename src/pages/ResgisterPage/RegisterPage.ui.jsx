@@ -29,7 +29,7 @@ export default function RegisterPage() {
 
       <RegisterContainer>
         <LogoContainer>
-          <LogoImage src='src/assets/images/LogoGH.png' alt='Logo' />
+          <LogoImage src='src/assets/images/Avatar/LogoGH.png' alt='Logo' />
         </LogoContainer>
         <RegisterForm>
           <h2>Cadastro</h2>

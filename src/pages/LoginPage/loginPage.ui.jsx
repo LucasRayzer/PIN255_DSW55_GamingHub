@@ -31,7 +31,7 @@ export default function LoginPage() {
 
       <LoginContainer>
         <LogoContainer>
-          <LogoImage src='src/assets/images/LogoGH.png' alt='Logo' />
+          <LogoImage src='src/assets/images/Avatar/LogoGH.png' alt='Logo' />
         </LogoContainer>
         <LoginForm>
           <h2>Login</h2>
