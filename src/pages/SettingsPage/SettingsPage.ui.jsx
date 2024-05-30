@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   SettingsPageContainer, 
@@ -7,25 +7,49 @@ import {
   ActionButton 
 } from './SettingsPage.styles';
 import { NavHeader } from '../../components/HeaderMenu/HeaderMenu.ui';
+import NicknameChangeModal from '../../components/Modals/NickNameChangeModal/NickNameChangeModal.ui';
+import PasswordChangeModal from '../../components/Modals/PasswordChangeModal/PasswordChangeModal.ui';
+import AvatarChangeModal from '../../components/Modals/AvatarChangeModal/AvatarChangeModal.ui';
 
 export default function SettingsPage() {
+  const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
+  const [avatar, setAvatar] = useState('/path/to/default/avatar.png'); // caminho do avatar padrão
+
   const navigate = useNavigate();
 
   const handleNicknameChange = () => {
-    // Lógica para abrir o pop-up de alteração de apelido
+    setIsNicknameModalOpen(true);
+  };
+
+  const handleCloseNicknameModal = () => {
+    setIsNicknameModalOpen(false);
   };
 
   const handlePasswordChange = () => {
-    // Lógica para abrir o pop-up de alteração de senha
+    setIsPasswordModalOpen(true);
+  };
+
+  const handleClosePasswordModal = () => {
+    setIsPasswordModalOpen(false);
   };
 
   const handleAvatarChange = () => {
-    // Lógica para abrir o pop-up de alteração de avatar
+    setIsAvatarModalOpen(true);
+  };
+
+  const handleCloseAvatarModal = () => {
+    setIsAvatarModalOpen(false);
+  };
+
+  const handleSaveAvatar = (newAvatar) => {
+    setAvatar(newAvatar);
   };
 
   return (
     <SettingsPageContainer>
-      <NavHeader />
+      <NavHeader avatar={avatar} />
       <SettingsPageBodyContainer>
         <ButtonContainer>
           <ActionButton onClick={handleNicknameChange}>Alterar Apelido</ActionButton>
@@ -33,6 +57,9 @@ export default function SettingsPage() {
           <ActionButton onClick={handleAvatarChange}>Alterar Avatar</ActionButton>
         </ButtonContainer>
       </SettingsPageBodyContainer>
+      <NicknameChangeModal isOpen={isNicknameModalOpen} onClose={handleCloseNicknameModal} />
+      <PasswordChangeModal isOpen={isPasswordModalOpen} onClose={handleClosePasswordModal} />
+      <AvatarChangeModal isOpen={isAvatarModalOpen} onClose={handleCloseAvatarModal} onSave={handleSaveAvatar} />
     </SettingsPageContainer>
   );
 }
