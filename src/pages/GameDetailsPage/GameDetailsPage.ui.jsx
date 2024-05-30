@@ -40,6 +40,22 @@ export default function GameDetailsPage() {
   const handleRateClick = () => {
     navigate(`/rate/${id}`);
   };
+  //aqui tá com erro mesmo, é pq n tem lógica, ai ele reclama, deveria em addFav adicionar a lista de favoritos, e getReward, adicionar
+  // um dos tiipos de troféus na lista de troféu do user, ou os dois se já fez 2x todas as conquistas
+  const handleGetReward = () => {
+    // Save the note to the backend or state management
+    //aqui temos que adicionar as condicões se foi pegado recompensa sem ter concluido tudo, 
+    //o alerta tem q ser de não concluido, se pegado 2x todas as achivments, deve ser pegado o troféu de ouro, se não só o de prata
+    alert(`Recompensa Resgatada!`);
+     
+  };
+  const handleAddFav = () => {
+    // Save the note to the backend or state management
+    //aqui temos que adicionar as condicões se foi pegado recompensa sem ter concluido tudo, 
+    //o alerta tem q ser de não concluido, se pegado 2x todas as achivments, deve ser pegado o troféu de ouro, se não só o de prata
+    alert(`O jogo ${gameData.name} foi adicionado aos favoritos!`);
+     
+  };
 
   return (
     <GameDetailsContainer>
@@ -58,9 +74,9 @@ export default function GameDetailsPage() {
               </GameInfoUp>
               <GameInfoDown>
                 <ActionsContainer>
-                  <ActionButton>Adicionar aos Favoritos</ActionButton>
+                  <ActionButton onCLick={handleAddFav}>Adicionar aos Favoritos</ActionButton>
                   <ActionButton onClick={handleRateClick}>Atribuir Nota</ActionButton>
-                  <ActionButton>Resgatar Recompensa</ActionButton>
+                  <ActionButton onCLick={handleGetReward}>Resgatar Recompensa</ActionButton>
                 </ActionsContainer>
               </GameInfoDown>
             </Section>
