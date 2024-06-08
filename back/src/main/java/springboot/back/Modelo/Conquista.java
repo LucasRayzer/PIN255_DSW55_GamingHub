@@ -4,16 +4,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
+import java.time.Instant;
 import java.util.List;
 
 @Entity
 public class Conquista {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idConquista;
+    private Integer conquistaId;
 
+    private String steamId;
+    private int appId;
     private String nomeConquista;
-    private Boolean conquistaConcluida;
+    private int conquistaConcluida;
+    private Instant unlockTime;
 
     @ManyToMany(mappedBy = "conquistas")
     private List<Trofeu> trofeuFinalizados;
@@ -21,24 +25,28 @@ public class Conquista {
     @ManyToOne
     @JoinColumn(name = "jogo_id")
     private Jogo jogo;
-
-    public Conquista() {
-    }
-
-    public Conquista(Integer idConquista, String nomeConquista, Boolean conquistaConcluida, List<Trofeu> trofeuFinalizados, Jogo jogo) {
-        this.idConquista = idConquista;
-        this.nomeConquista = nomeConquista;
-        this.conquistaConcluida = conquistaConcluida;
-        this.trofeuFinalizados = trofeuFinalizados;
-        this.jogo = jogo;
-    }
-
     public Integer getIdConquista() {
-        return idConquista;
+        return conquistaId;
     }
 
     public void setIdConquista(Integer idConquista) {
-        this.idConquista = idConquista;
+        this.conquistaId = idConquista;
+    }
+
+    public String getSteamId() {
+        return steamId;
+    }
+
+    public void setSteamId(String steamId) {
+        this.steamId = steamId;
+    }
+
+    public int getAppId() {
+        return appId;
+    }
+
+    public void setAppId(int appId) {
+        this.appId = appId;
     }
 
     public String getNomeConquista() {
@@ -49,12 +57,20 @@ public class Conquista {
         this.nomeConquista = nomeConquista;
     }
 
-    public Boolean getConquistaConcluida() {
+    public int getConquistaConcluida() {
         return conquistaConcluida;
     }
 
-    public void setConquistaConcluida(Boolean conquistaConcluida) {
+    public void setConquistaConcluida(int conquistaConcluida) {
         this.conquistaConcluida = conquistaConcluida;
+    }
+
+    public Instant getUnlockTime() {
+        return unlockTime;
+    }
+
+    public void setUnlockTime(Instant unlockTime) {
+        this.unlockTime = unlockTime;
     }
 
     public List<Trofeu> getTrofeuFinalizados() {

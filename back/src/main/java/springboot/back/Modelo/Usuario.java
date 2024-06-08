@@ -10,7 +10,7 @@ import java.util.List;
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer usuarioId;
 
 
     private String nomeUsuario;
@@ -32,7 +32,7 @@ public class Usuario {
     }
 
     public Usuario(Integer id, String nomeUsuario, String apelido, String senha, List<Acesso> acessos, List<Jogo> biblioteca) {
-        this.id = id;
+        this.usuarioId = id;
         this.nomeUsuario = nomeUsuario;
         this.apelido = apelido;
         this.senha = senha;
@@ -41,11 +41,11 @@ public class Usuario {
     }
 
     public Integer getId() {
-        return id;
+        return usuarioId;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.usuarioId = id;
     }
 
     public String getNomeUsuario() {

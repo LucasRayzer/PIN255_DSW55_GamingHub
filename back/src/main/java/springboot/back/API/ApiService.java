@@ -4,7 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import springboot.back.Modelo.Conquista;
+import springboot.back.Modelo.Jogo;
+import springboot.back.Repositorio.ConquistaRepository;
+import springboot.back.Repositorio.JogoRepository;
 
+import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,7 +19,9 @@ public class ApiService {
     @Autowired
     private WebClient.Builder webClientBuilder;
     @Autowired
-    private GameRepository gameRepository;
+    private ConquistaRepository conquistaRepository;
+    @Autowired
+    private JogoRepository jogoRepository;
 
     public Mono<ApiResponse> getSteamPlayerProfile(String steamId) {
         String url = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=9D94F49413553413A449F22760F36A56&steamids=" + steamId;
@@ -23,39 +31,65 @@ public class ApiService {
                 .retrieve()
                 .bodyToMono(ApiResponse.class);
     }
-    public  Mono<OwnedGameResponse> getOwnedGames(String steamId) {
+    public  Mono<JogosUsuarioResponse> getOwnedGames(String steamId) {
         String url = "https://api.steampowered.com/IPlayerService/GetOwnedGames/v001/?key=9D94F49413553413A449F22760F36A56&steamid=" + steamId + "&format=json";
         return webClientBuilder.build()
                 .get()
                 .uri(url)
                 .retrieve()
-                .bodyToMono(OwnedGameResponse.class);
+                .bodyToMono(JogosUsuarioResponse.class)
+                .doOnNext(response -> saveGames(response.getJogos().getJogoRList()));
     }
 
-    public void saveGames(List<Game> games) {
-        List<GameEntity> gameEntities = games.stream().map(this::mapToEntity).collect(Collectors.toList());
-        gameRepository.saveAll(gameEntities);
+    public void saveGames(List<JogosUsuarioResponse.JogoR> games) {
+        List<Jogo> jogosEntidade = games.stream().map(this::mapToEntity).collect(Collectors.toList());
+        jogoRepository.saveAll(jogosEntidade);
     }
 
-    private GameEntity mapToEntity(Game game) {
-        GameEntity gameEntity = new GameEntity();
-        gameEntity.setAppId(game.getAppId());
-        gameEntity.setPlaytimeForever(game.getPlaytimeForever());
-        updateGameDetails(gameEntity);
-        return gameEntity;
+    private Jogo mapToEntity(JogosUsuarioResponse.JogoR jogoR) {
+        Jogo jogoE = new Jogo();
+        jogoE.setAppId(jogoR.getAppId());
+        jogoE.setTempoDeJogo(jogoR.getPlaytimeForever());
+        updateGameDetails(jogoE);
+        return jogoE;
     }
-    private void updateGameDetails(GameEntity gameEntity) {
-        String url = "https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=9D94F49413553413A449F22760F36A56&appid=" + gameEntity.getAppId();
+    private void updateGameDetails(Jogo jogo) {
+        String url = "https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=9D94F49413553413A449F22760F36A56&appid=" + jogo.getAppId();
         webClientBuilder.build()
                 .get()
                 .uri(url)
                 .retrieve()
-                .bodyToMono(GameDetailsResponse.class)
-                .map(GameDetailsResponse::getGame)
-                .doOnNext(details -> {
-                    gameEntity.setName(details.getName());
-                    gameRepository.save(gameEntity); // Save the updated entity
+                .bodyToMono(DetalhesResponse.class)
+                .map(DetalhesResponse::getDetalheJogo)
+                .doOnNext(detalhes -> {
+                    jogo.setNome(detalhes.getNome());
+                    jogoRepository.save(jogo);
                 })
                 .subscribe();
+    }
+    public Mono<ConquistaResponse> getPlayerAchievements(String steamId, int appId) {
+        String url = "https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?key=9D94F49413553413A449F22760F36A56&steamid="+ steamId +"&appid="+ appId;
+        return webClientBuilder.build()
+                .get()
+                .uri(url)
+                .retrieve()
+                .bodyToMono(ConquistaResponse.class)
+                .doOnNext(response -> saveAchievements(response, steamId, appId));
+    }
+    private void saveAchievements(ConquistaResponse response, String steamId, int appId){
+        List<Conquista> conquistas = Arrays.stream(response.getUserStats().getConquistas())
+                .map(conquistaR -> mapToEntity(conquistaR, steamId, appId))
+                .collect(Collectors.toList());
+        conquistaRepository.saveAll(conquistas);
+    }
+
+    private Conquista mapToEntity(ConquistaResponse.ConquistaR conquistaR, String steamId, int appId) {
+        Conquista conq = new Conquista();
+        conq.setSteamId(steamId);
+        conq.setAppId(appId);
+        conq.setNomeConquista(conquistaR.getApiName());
+        conq.setConquistaConcluida(conquistaR.getAchieved());
+        conq.setUnlockTime(Instant.ofEpochSecond(conquistaR.getUnlockTime()));
+        return conq;
     }
 }

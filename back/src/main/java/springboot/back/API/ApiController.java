@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import springboot.back.Modelo.Conquista;
+import springboot.back.Modelo.Jogo;
+import springboot.back.Repositorio.ConquistaRepository;
+import springboot.back.Repositorio.JogoRepository;
 
 import java.util.List;
 
@@ -15,29 +19,28 @@ public class ApiController {
     @Autowired
     private ApiService apiService;
     @Autowired
-    private GameRepository gameRepository;
+    private ConquistaRepository conquistaRepository;
+    @Autowired
+    private JogoRepository jogoRepository;
 
     @GetMapping("/steamplayer/{steamId}")
     public Mono<ApiResponse> getSteamPlayerProfile(@PathVariable String steamId) {
         return apiService.getSteamPlayerProfile(steamId);
     }
-    /*@GetMapping("/playerGames/{steamId}")
-    public Mono<OwnedGameResponse> getOwnedGames(@PathVariable String steamId){
-        return apiService.getOwnedGames(steamId)
-                .doOnNext(response -> apiService.saveGames(response.getResponse().getGames()));
-    }*/
-    @GetMapping("/games")
-    public List<GameEntity> getAll(){
-        return gameRepository.findAll();
-    }
     @GetMapping("/playerGames/{steamId}")
-    public Mono<OwnedGameResponse> getOwnedGames(@PathVariable String steamId) {
-        return apiService.getOwnedGames(steamId)
-                .doOnNext(response -> {
-                    if (response.getResponse() != null) {
-                        apiService.saveGames(response.getResponse().getGames());
-                    }
-                });
+    public Mono<JogosUsuarioResponse> getOwnedGames(@PathVariable String steamId) {
+        return apiService.getOwnedGames(steamId);
     }
-
+    @GetMapping("/games")
+    public List<Jogo> getAllGames(){
+        return jogoRepository.findAll();
+    }
+    @GetMapping("/playerAchievements/{steamId}/{appId}")
+    public Mono<ConquistaResponse> getPlayerAchievements(@PathVariable String steamId, @PathVariable int appId) {
+        return apiService.getPlayerAchievements(steamId, appId);
+    }
+    @GetMapping("/achievements")
+    public List<Conquista> getAllAchievements(){
+        return conquistaRepository.findAll();
+    }
 }

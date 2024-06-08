@@ -11,6 +11,9 @@ public class Jogo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer jogoId;
 
+    private int appId;
+    private String nome;
+    private int tempoDeJogo;
     private Integer notaJogo;
     private Boolean jogoFavorito;
 
@@ -20,23 +23,36 @@ public class Jogo {
     @ManyToMany(mappedBy = "biblioteca")
     private List<Usuario> usuarios;
 
-    public Jogo() {
-    }
-
-    public Jogo(Integer jogoId, Integer notaJogo, Boolean jogoFavorito, List<Conquista> conquistasJogo, List<Usuario> usuarios) {
-        this.jogoId = jogoId;
-        this.notaJogo = notaJogo;
-        this.jogoFavorito = jogoFavorito;
-        this.conquistasJogo = conquistasJogo;
-        this.usuarios = usuarios;
-    }
-
     public Integer getJogoId() {
         return jogoId;
     }
 
     public void setJogoId(Integer jogoId) {
         this.jogoId = jogoId;
+    }
+
+    public int getAppId() {
+        return appId;
+    }
+
+    public void setAppId(int appId) {
+        this.appId = appId;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public int getTempoDeJogo() {
+        return tempoDeJogo;
+    }
+
+    public void setTempoDeJogo(int tempoDeJogo) {
+        this.tempoDeJogo = tempoDeJogo;
     }
 
     public Integer getNotaJogo() {
