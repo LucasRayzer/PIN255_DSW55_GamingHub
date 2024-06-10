@@ -26,6 +26,8 @@ public class ApiController {
     // 76561198973296498
     // 1091500
     // 1262350
+//    DROP SCHEMA public CASCADE;
+//    CREATE SCHEMA public;
     //http://localhost:8080/api/playerGames/76561198973296498
     //http://localhost:8080/api/games
     //http://localhost:8080/api/playerAchievements/76561198973296498/1091500
@@ -46,7 +48,7 @@ public class ApiController {
     }
     @GetMapping("/games")
     public List<Jogo> getAllGames(){
-        //temporario dps eu tiro daqui
+        //adiciona o numero de conquistas aos jogos(temporário)
         for(int i=1;i<=jogoRepository.count();i++){
             Jogo jogo=jogoRepository.findById(i).get();
             int count=0;

@@ -33,6 +33,8 @@ public class JogoController {
     public Jogo getJogoById(@PathVariable int id){
         return jogoRepository.findById(id).get();
     }
+
+    //seta SteamId do usuário no jogo
     @GetMapping("/associar")
     public List<Jogo> associarSteamId(){
         for(int i=1;i<= jogoRepository.count();i++){
@@ -48,6 +50,8 @@ public class JogoController {
         }
         return jogoRepository.findAll();
     }
+
+    //pega as conquistas do jogo especificado. também calcula as conquistas que foram concluídas(temporário)
     @GetMapping("/{id}/conquistas")
     public List<Conquista> listarConquistasJogo(@PathVariable int id){
         List<Conquista> temp= new ArrayList<>();
@@ -57,6 +61,7 @@ public class JogoController {
             if(conquista.getAppId()==jogo.getAppId())
                 temp.add(conquista);
         }
+        jogoRepository.save(jogo.conquistasFinalizadas(conquistaRepository.findAll()));
         return temp;
     }
 }

@@ -50,21 +50,21 @@ public class UsuarioController {
         usuarioRepository.save(user);
         return user;
     }
-    @GetMapping("/associar")
-    public List<Usuario> associarJogoUsuario(){
-        for(int i=1;i<=usuarioRepository.count();i++){
-            Usuario user = usuarioRepository.findById(i).get();
-            for(int j=1;j<=jogoRepository.count();j++){
-                Jogo jogo=jogoRepository.findById(j).get();
-                if(user.getSteamId()!=null)
-                    if(user.getSteamId().equals(jogo.getSteamId())){
-                        user.adicionarJogo(jogo);
-                    }
-            }
-           usuarioRepository.save(user);
-        }
-        return usuarioRepository.findAll();
-    }
+//    @GetMapping("/associar")
+//    public List<Usuario> associarJogoUsuario(){
+//        for(int i=1;i<=usuarioRepository.count();i++){
+//            Usuario user = usuarioRepository.findById(i).get();
+//            for(int j=1;j<=jogoRepository.count();j++){
+//                Jogo jogo=jogoRepository.findById(j).get();
+//                if(user.getSteamId()!=null)
+//                    if(user.getSteamId().equals(jogo.getSteamId())){
+//                        user.adicionarJogo(jogo);
+//                    }
+//            }
+//           usuarioRepository.save(user);
+//        }
+//        return usuarioRepository.findAll();
+//    }
 //    @GetMapping("/{id}/jogo")
 //    public List<Jogo> getJogoUsuario(@PathVariable int id){
 //        Optional<Usuario> usuario = usuarioRepository.findById(id);

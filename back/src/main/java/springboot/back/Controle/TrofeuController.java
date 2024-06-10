@@ -1,27 +1,30 @@
 package springboot.back.Controle;
 
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import springboot.back.Modelo.Conquista;
+import springboot.back.Modelo.Jogo;
 import springboot.back.Modelo.Trofeu;
 import springboot.back.Repositorio.ConquistaRepository;
+import springboot.back.Repositorio.JogoRepository;
 import springboot.back.Repositorio.TrofeuRepository;
 
 import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/trofeu")
+@RequestMapping("/trofeu")
 public class TrofeuController {
+    @Autowired
     private TrofeuRepository trofeuRepository;
+    @Autowired
+    private JogoRepository jogoRepository;
+    @Autowired
     private ConquistaRepository conquistaRepository;
 
-    public TrofeuController(TrofeuRepository trofeuRepository, ConquistaRepository conquistaRepository) {
-        this.trofeuRepository = trofeuRepository;
-        this.conquistaRepository=conquistaRepository;
-    }
     @GetMapping("/all")
     public List<Trofeu> getAllTrofeus(){
         return trofeuRepository.findAll();
@@ -39,13 +42,20 @@ public class TrofeuController {
                 .toUri();
         return ResponseEntity.created(location).build();
     }
-    //POST /api/trofeu/associar?trofeuId=1&conquistaId=2
-   /* @PostMapping("/associar")
-    public ResponseEntity<Trofeu> associarTrofeuComConquista(@RequestParam int trofeuId, @RequestParam int conquistaId){
-        Trofeu trofeu = trofeuRepository.findById(trofeuId).get();
-        Conquista conquista = conquistaRepository.findById(conquistaId).get();
-        trofeu.setConquista(conquista);
-        trofeuRepository.save(trofeu);
-        return ResponseEntity.ok(trofeu);
-    }*/
+    //calcula se o jogo tem todas as conquistas concluidas e adiciona o troféu
+    @GetMapping("/associar")
+    public List<Trofeu> associarTrofeuComConquista(){
+        for(int i=1;i<= jogoRepository.count();i++){
+            Jogo jogo = jogoRepository.findById(i).get();
+            Trofeu trofeu = new Trofeu();
+            trofeu.setAppId(jogo.getAppId());
+            if (jogo.getF_conquistas() == jogo.getN_conquistas() && trofeu.getTrofeuPrata() == null&&jogo.getN_conquistas()>0) {
+
+                trofeu.setTrofeuPrata(true);
+            }
+            trofeuRepository.save(trofeu);
+
+        }
+        return trofeuRepository.findAll();
+    }
 }

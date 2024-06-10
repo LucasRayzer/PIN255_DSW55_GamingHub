@@ -18,6 +18,7 @@ public class Jogo {
     private Integer notaJogo;
     private Boolean jogoFavorito;
     private int n_conquistas;
+    private int f_conquistas;
 
     @OneToMany(mappedBy = "jogo")
     private List<Conquista> conquistasJogo;
@@ -103,5 +104,22 @@ public class Jogo {
 
     public void setN_conquistas(int n_conquistas) {
         this.n_conquistas = n_conquistas;
+    }
+
+    public int getF_conquistas() {
+        return f_conquistas;
+    }
+
+    public void setF_conquistas(int f_conquistas) {
+        this.f_conquistas = f_conquistas;
+    }
+    //calcula as conquistas finalizadas do jogo
+    public Jogo conquistasFinalizadas(List<Conquista> conquistas){
+        for(int i=0;i<conquistas.size();i++){
+            if(conquistas.get(i).getAppId()==getAppId()&&conquistas.get(i).getConquistaConcluida()==1){
+                f_conquistas++;
+            }
+        }
+        return this;
     }
 }

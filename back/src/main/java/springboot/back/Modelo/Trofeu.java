@@ -18,6 +18,7 @@ public class Trofeu {
     private Boolean trofeuOuro;
 
     private Boolean trofeuPrata;
+    private int appId;
 
     @ManyToMany
     @JoinTable(
@@ -65,6 +66,14 @@ public class Trofeu {
 
     public void setConquistas(List<Conquista> conquistas) {
         this.conquistas = conquistas;
+    }
+
+    public int getAppId() {
+        return appId;
+    }
+
+    public void setAppId(int appId) {
+        this.appId = appId;
     }
 
     public void reinvidicarTrofeu() {
