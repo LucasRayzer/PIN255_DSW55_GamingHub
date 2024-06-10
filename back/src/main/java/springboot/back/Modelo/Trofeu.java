@@ -27,17 +27,6 @@ public class Trofeu {
     )
     private List<Conquista> conquistas;
 
-    public Trofeu() {
-    }
-
-    public Trofeu(Integer id, Jogo jogoFinalizado, Boolean trofeuOuro, Boolean trofeuPrata, List<Conquista> conquistas) {
-        this.id = id;
-        this.jogoFinalizado = jogoFinalizado;
-        this.trofeuOuro = trofeuOuro;
-        this.trofeuPrata = trofeuPrata;
-        this.conquistas = conquistas;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -79,7 +68,7 @@ public class Trofeu {
     }
 
     public void reinvidicarTrofeu() {
-        // Implementação do método
+
     }
 }
 

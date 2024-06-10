@@ -16,7 +16,7 @@ public class Usuario {
     private String nomeUsuario;
     private String apelido;
     private String senha;
-
+    private String steamId;
     @OneToMany(mappedBy = "usuario")
     private List<Acesso> acessos;
 
@@ -27,18 +27,6 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "jogo_id")
     )
     private List<Jogo> biblioteca;
-
-    public Usuario() {
-    }
-
-    public Usuario(Integer id, String nomeUsuario, String apelido, String senha, List<Acesso> acessos, List<Jogo> biblioteca) {
-        this.usuarioId = id;
-        this.nomeUsuario = nomeUsuario;
-        this.apelido = apelido;
-        this.senha = senha;
-        this.acessos = acessos;
-        this.biblioteca = biblioteca;
-    }
 
     public Integer getId() {
         return usuarioId;
@@ -86,6 +74,17 @@ public class Usuario {
 
     public void setBiblioteca(List<Jogo> biblioteca) {
         this.biblioteca = biblioteca;
+    }
+
+    public String getSteamId() {
+        return steamId;
+    }
+
+    public void setSteamId(String steamId) {
+        this.steamId = steamId;
+    }
+    public void adicionarJogo(Jogo jogo){
+        biblioteca.add(jogo);
     }
 
     public void conectarSteam() {

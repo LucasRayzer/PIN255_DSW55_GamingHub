@@ -12,10 +12,12 @@ public class Jogo {
     private Integer jogoId;
 
     private int appId;
+    private String steamId;
     private String nome;
     private int tempoDeJogo;
     private Integer notaJogo;
     private Boolean jogoFavorito;
+    private int n_conquistas;
 
     @OneToMany(mappedBy = "jogo")
     private List<Conquista> conquistasJogo;
@@ -85,5 +87,21 @@ public class Jogo {
 
     public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
+    }
+
+    public String getSteamId() {
+        return steamId;
+    }
+
+    public void setSteamId(String steamId) {
+        this.steamId = steamId;
+    }
+
+    public int getN_conquistas() {
+        return n_conquistas;
+    }
+
+    public void setN_conquistas(int n_conquistas) {
+        this.n_conquistas = n_conquistas;
     }
 }

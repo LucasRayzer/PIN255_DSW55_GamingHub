@@ -1,6 +1,7 @@
 package springboot.back.Controle;
 
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -12,19 +13,18 @@ import springboot.back.Repositorio.JogoRepository;
 import springboot.back.Repositorio.UsuarioRepository;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/jogo")
+@RequestMapping("/jogo")
 public class JogoController {
-    /*private JogoRepository jogoRepository;
-    private UsuarioRepository usuarioRepository;
+    @Autowired
+    private JogoRepository jogoRepository;
+    @Autowired
+    private ConquistaRepository conquistaRepository;
 
-    public JogoController(JogoRepository jogoRepository, UsuarioRepository usuarioRepository) {
-        this.jogoRepository = jogoRepository;
-        this.usuarioRepository = usuarioRepository;
-    }
     @GetMapping("/all")
     public List<Jogo> getAllJogo(){
         return jogoRepository.findAll();
@@ -33,27 +33,30 @@ public class JogoController {
     public Jogo getJogoById(@PathVariable int id){
         return jogoRepository.findById(id).get();
     }
-    @PostMapping("/create")
-    public ResponseEntity<Jogo> createJogo(@Valid @RequestBody Jogo jogo){
-        Jogo savedJogo = jogoRepository.save(jogo);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedJogo.getIdJogo())
-                .toUri();
-        return ResponseEntity.created(location).build();
-    }
-    //POST /api/jogo/associar?jogoId=1&userId=2
-    @PostMapping("/associar")
-    public ResponseEntity<Jogo> associarJogoUsuario(@RequestParam int jogoId, @RequestParam int userId){
-        Jogo jogo = jogoRepository.findById(jogoId).get();
-        Usuario usuario = usuarioRepository.findById(userId).get();
-        jogo.setUsuario(usuario);
-        jogoRepository.save(jogo);
-        return ResponseEntity.ok(jogo);
+    @GetMapping("/associar")
+    public List<Jogo> associarSteamId(){
+        for(int i=1;i<= jogoRepository.count();i++){
+            Jogo jogo = jogoRepository.findById(i).get();
+            for (int j=1;j<=conquistaRepository.count();j++) {
+                Conquista conquista = conquistaRepository.findById(j).get();
+                if(jogo.getAppId()==conquista.getAppId()) {
+                    jogo.setSteamId(conquista.getSteamId());
+                    jogoRepository.save(jogo);
+                    break;
+                }
+            }
+        }
+        return jogoRepository.findAll();
     }
     @GetMapping("/{id}/conquistas")
     public List<Conquista> listarConquistasJogo(@PathVariable int id){
-        Optional<Jogo> jogo = jogoRepository.findById(id);
-        return jogo.get().getConquistasJogo();
-    }*/
+        List<Conquista> temp= new ArrayList<>();
+        Jogo jogo = jogoRepository.findById(id).get();
+        for(int i=1;i<=conquistaRepository.count();i++){
+            Conquista conquista = conquistaRepository.findById(i).get();
+            if(conquista.getAppId()==jogo.getAppId())
+                temp.add(conquista);
+        }
+        return temp;
+    }
 }
