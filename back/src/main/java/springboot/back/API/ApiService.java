@@ -74,6 +74,7 @@ public class ApiService {
                 .uri(url)
                 .retrieve()
                 .bodyToMono(ConquistaResponse.class)
+                .filter(response -> response.getUserStats() != null && response.getUserStats().getConquistas() != null)
                 .doOnNext(response -> saveAchievements(response, steamId, appId));
     }
     private void saveAchievements(ConquistaResponse response, String steamId, int appId){

@@ -114,12 +114,11 @@ public class Jogo {
         this.f_conquistas = f_conquistas;
     }
     //calcula as conquistas finalizadas do jogo
-    public Jogo conquistasFinalizadas(List<Conquista> conquistas){
+    public void conquistasFinalizadas(List<Conquista> conquistas){
         for(int i=0;i<conquistas.size();i++){
             if(conquistas.get(i).getAppId()==getAppId()&&conquistas.get(i).getConquistaConcluida()==1){
                 f_conquistas++;
             }
         }
-        return this;
     }
 }

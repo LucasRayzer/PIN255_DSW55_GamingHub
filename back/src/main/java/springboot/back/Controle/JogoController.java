@@ -61,7 +61,8 @@ public class JogoController {
             if(conquista.getAppId()==jogo.getAppId())
                 temp.add(conquista);
         }
-        jogoRepository.save(jogo.conquistasFinalizadas(conquistaRepository.findAll()));
+        //jogoRepository.save(jogo.conquistasFinalizadas(conquistaRepository.findAll()));
         return temp;
     }
+
 }

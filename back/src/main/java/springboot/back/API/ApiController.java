@@ -38,6 +38,7 @@ public class ApiController {
     //http://localhost:8080/api/playerAchievements/76561198973296498/1262350
     //http://localhost:8080/jogo/45/conquistas
     //http://localhost:8080/user/associar
+
     @GetMapping("/steamplayer/{steamId}")
     public Mono<ApiResponse> getSteamPlayerProfile(@PathVariable String steamId) {
         return apiService.getSteamPlayerProfile(steamId);
@@ -48,18 +49,6 @@ public class ApiController {
     }
     @GetMapping("/games")
     public List<Jogo> getAllGames(){
-        //adiciona o numero de conquistas aos jogos(temporário)
-        for(int i=1;i<=jogoRepository.count();i++){
-            Jogo jogo=jogoRepository.findById(i).get();
-            int count=0;
-            for(int j=1;j<=conquistaRepository.count();j++){
-                Conquista conquista = conquistaRepository.findById(j).get();
-                if(jogo.getAppId()==conquista.getAppId())
-                    count++;
-            }
-            jogo.setN_conquistas(count);
-            jogoRepository.save(jogo);
-        }
         return jogoRepository.findAll();
     }
     @GetMapping("/playerAchievements/{steamId}/{appId}")
@@ -69,5 +58,23 @@ public class ApiController {
     @GetMapping("/achievements")
     public List<Conquista> getAllAchievements(){
         return conquistaRepository.findAll();
+    }
+    @GetMapping("/setConquistas")
+    public void setarConquistas(){
+        for(int i =1;i<= jogoRepository.count();i++) {
+            int count = 0;
+            Jogo jogo = jogoRepository.findById(i).get();
+            for (int j = 1; j <= conquistaRepository.count(); j++) {
+                Conquista conquista = conquistaRepository.findById(j).get();
+                if (jogo.getAppId() == conquista.getAppId()) {
+                    jogo.setSteamId(conquista.getSteamId());
+                    count++;
+                }
+
+            }
+            jogo.setN_conquistas(count);
+            jogo.conquistasFinalizadas(conquistaRepository.findAll());
+            jogoRepository.save(jogo);
+        }
     }
 }
