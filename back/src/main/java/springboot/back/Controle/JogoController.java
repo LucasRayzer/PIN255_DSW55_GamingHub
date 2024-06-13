@@ -27,28 +27,24 @@ public class JogoController {
 
     @GetMapping("/all")
     public List<Jogo> getAllJogo(){
-        return jogoRepository.findAll();
+        List<Jogo> temp = new ArrayList<>();
+        for(int i=1;i<= jogoRepository.count();i++){
+            if(jogoRepository.existsById(i)){
+                Jogo jogo = jogoRepository.findById(i).get();
+                jogo.setUsuarioJogos(null);
+                temp.add(jogo);
+            }
+        }
+        return temp;
     }
     @GetMapping("/{id}")
     public Jogo getJogoById(@PathVariable int id){
-        return jogoRepository.findById(id).get();
-    }
-
-    //seta SteamId do usuário no jogo
-    @GetMapping("/associar")
-    public List<Jogo> associarSteamId(){
-        for(int i=1;i<= jogoRepository.count();i++){
-            Jogo jogo = jogoRepository.findById(i).get();
-            for (int j=1;j<=conquistaRepository.count();j++) {
-                Conquista conquista = conquistaRepository.findById(j).get();
-                if(jogo.getAppId()==conquista.getAppId()) {
-                    jogo.setSteamId(conquista.getSteamId());
-                    jogoRepository.save(jogo);
-                    break;
-                }
-            }
-        }
-        return jogoRepository.findAll();
+        if(jogoRepository.existsById(id)) {
+            Jogo temp = jogoRepository.findById(id).get();
+            temp.setUsuarioJogos(null);
+            return temp;
+        } else
+            return null;
     }
 
     //pega as conquistas do jogo especificado. também calcula as conquistas que foram concluídas(temporário)
@@ -61,7 +57,6 @@ public class JogoController {
             if(conquista.getAppId()==jogo.getAppId())
                 temp.add(conquista);
         }
-        //jogoRepository.save(jogo.conquistasFinalizadas(conquistaRepository.findAll()));
         return temp;
     }
 

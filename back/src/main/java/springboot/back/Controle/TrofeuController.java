@@ -46,15 +46,15 @@ public class TrofeuController {
     @GetMapping("/associar")
     public List<Trofeu> associarTrofeuComConquista(){
         for(int i=1;i<= jogoRepository.count();i++){
-            Jogo jogo = jogoRepository.findById(i).get();
-            Trofeu trofeu = new Trofeu();
-            trofeu.setAppId(jogo.getAppId());
-            if (jogo.getF_conquistas() == jogo.getN_conquistas() && trofeu.getTrofeuPrata() == null&&jogo.getN_conquistas()>0) {
-
-                trofeu.setTrofeuPrata(true);
+            if(jogoRepository.existsById(i)) {
+                Jogo jogo = jogoRepository.findById(i).get();
+                Trofeu trofeu = new Trofeu();
+                trofeu.setAppId(jogo.getAppId());
+                if (jogo.getF_conquistas() == jogo.getN_conquistas()&&jogo.getN_conquistas()!=0) {
+                    trofeu.setTrofeuPrata(true);
+                }
+                trofeuRepository.save(trofeu);
             }
-            trofeuRepository.save(trofeu);
-
         }
         return trofeuRepository.findAll();
     }

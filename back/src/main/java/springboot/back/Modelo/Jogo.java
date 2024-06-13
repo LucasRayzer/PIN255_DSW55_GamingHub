@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Jogo {
@@ -23,8 +24,16 @@ public class Jogo {
     @OneToMany(mappedBy = "jogo")
     private List<Conquista> conquistasJogo;
 
-    @ManyToMany(mappedBy = "biblioteca")
-    private List<Usuario> usuarios;
+    @OneToMany(mappedBy = "jogo")
+    private Set<UsuarioJogo> usuarioJogos;
+
+    public Set<UsuarioJogo> getUsuarioJogos() {
+        return usuarioJogos;
+    }
+
+    public void setUsuarioJogos(Set<UsuarioJogo> usuarioJogos) {
+        this.usuarioJogos = usuarioJogos;
+    }
 
     public Integer getJogoId() {
         return jogoId;
@@ -81,19 +90,12 @@ public class Jogo {
     public void setConquistasJogo(List<Conquista> conquistasJogo) {
         this.conquistasJogo = conquistasJogo;
     }
-
-    public List<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
-    }
-
     public String getSteamId() {
         return steamId;
     }
-
+    public void addConquistasJogo(Conquista conquista){
+        conquistasJogo.add(conquista);
+    }
     public void setSteamId(String steamId) {
         this.steamId = steamId;
     }

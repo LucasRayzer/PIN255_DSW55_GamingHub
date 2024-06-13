@@ -38,18 +38,20 @@ public class ApiService {
                 .uri(url)
                 .retrieve()
                 .bodyToMono(JogosUsuarioResponse.class)
-                .doOnNext(response -> saveGames(response.getJogos().getJogoRList()));
+                .doOnNext(response -> saveGames(response.getJogos().getJogoRList(), steamId));
     }
 
-    public void saveGames(List<JogosUsuarioResponse.JogoR> games) {
-        List<Jogo> jogosEntidade = games.stream().map(this::mapToEntity).collect(Collectors.toList());
+    public void saveGames(List<JogosUsuarioResponse.JogoR> games, String steamId) {
+        List<Jogo> jogosEntidade = games.stream()
+                .map(jogoR -> mapToEntity(jogoR, steamId))
+                .collect(Collectors.toList());
         jogoRepository.saveAll(jogosEntidade);
     }
-
-    private Jogo mapToEntity(JogosUsuarioResponse.JogoR jogoR) {
+    private Jogo mapToEntity(JogosUsuarioResponse.JogoR jogoR, String steamId) {
         Jogo jogoE = new Jogo();
         jogoE.setAppId(jogoR.getAppId());
         jogoE.setTempoDeJogo(jogoR.getPlaytimeForever());
+        jogoE.setSteamId(steamId);
         updateGameDetails(jogoE);
         return jogoE;
     }

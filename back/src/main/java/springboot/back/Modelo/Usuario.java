@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Usuario {
@@ -20,13 +21,24 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<Acesso> acessos;
 
-    @ManyToMany
-    @JoinTable(
-            name = "usuario_jogo",
-            joinColumns = @JoinColumn(name = "usuario_id"),
-            inverseJoinColumns = @JoinColumn(name = "jogo_id")
-    )
-    private List<Jogo> biblioteca;
+    @OneToMany(mappedBy = "usuario")
+    private Set<UsuarioJogo> usuarioJogos;
+
+    public Integer getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(Integer usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public Set<UsuarioJogo> getUsuarioJogos() {
+        return usuarioJogos;
+    }
+
+    public void setUsuarioJogos(Set<UsuarioJogo> usuarioJogos) {
+        this.usuarioJogos = usuarioJogos;
+    }
 
     public Integer getId() {
         return usuarioId;
@@ -68,23 +80,12 @@ public class Usuario {
         this.acessos = acessos;
     }
 
-    public List<Jogo> getBiblioteca() {
-        return biblioteca;
-    }
-
-    public void setBiblioteca(List<Jogo> biblioteca) {
-        this.biblioteca = biblioteca;
-    }
-
     public String getSteamId() {
         return steamId;
     }
 
     public void setSteamId(String steamId) {
         this.steamId = steamId;
-    }
-    public void adicionarJogo(Jogo jogo){
-        biblioteca.add(jogo);
     }
 
     public void conectarSteam() {

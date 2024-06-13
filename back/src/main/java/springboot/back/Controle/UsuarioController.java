@@ -5,11 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import springboot.back.Modelo.Acesso;
-import springboot.back.Modelo.Jogo;
-import springboot.back.Modelo.Usuario;
+import springboot.back.Modelo.*;
 import springboot.back.Repositorio.AcessoRepository;
 import springboot.back.Repositorio.JogoRepository;
+import springboot.back.Repositorio.UsuarioJogoRepository;
 import springboot.back.Repositorio.UsuarioRepository;
 
 import java.net.URI;
@@ -25,6 +24,8 @@ public class UsuarioController {
     private AcessoRepository acessoRepository;
     @Autowired
     private JogoRepository jogoRepository;
+    @Autowired
+    private UsuarioJogoRepository usuarioJogoRepository;
 
     @GetMapping("/all")
     public List<Usuario> getAllUsuarios(){
@@ -50,21 +51,27 @@ public class UsuarioController {
         usuarioRepository.save(user);
         return user;
     }
-//    @GetMapping("/associar")
-//    public List<Usuario> associarJogoUsuario(){
-//        for(int i=1;i<=usuarioRepository.count();i++){
-//            Usuario user = usuarioRepository.findById(i).get();
-//            for(int j=1;j<=jogoRepository.count();j++){
-//                Jogo jogo=jogoRepository.findById(j).get();
-//                if(user.getSteamId()!=null)
-//                    if(user.getSteamId().equals(jogo.getSteamId())){
-//                        user.adicionarJogo(jogo);
-//                    }
-//            }
-//           usuarioRepository.save(user);
-//        }
-//        return usuarioRepository.findAll();
-//    }
+    @GetMapping("/associar")
+    public List<Usuario> associarJogoUsuario(){
+        UsuarioJogo usuarioJogo = new UsuarioJogo();
+        for(int i=1;i<=usuarioRepository.count();i++){
+            Usuario user = usuarioRepository.findById(i).get();
+            for(int j=1;j<=jogoRepository.count();j++){
+                if(jogoRepository.existsById(j)){
+                    Jogo jogo =jogoRepository.findById(j).get();
+                    if(jogo.getSteamId().equals(user.getSteamId())){
+                        UsuarioJogoId usuarioJogoId = new UsuarioJogoId(user.getUsuarioId(), jogo.getJogoId());
+                        usuarioJogo.setId(usuarioJogoId);
+                        usuarioJogo.setUsuario(user);
+                        usuarioJogo.setJogo(jogo);
+                        usuarioJogoRepository.save(usuarioJogo);
+                    }
+                }
+            }
+           usuarioRepository.save(user);
+        }
+        return usuarioRepository.findAll();
+    }
 //    @GetMapping("/{id}/jogo")
 //    public List<Jogo> getJogoUsuario(@PathVariable int id){
 //        Optional<Usuario> usuario = usuarioRepository.findById(id);

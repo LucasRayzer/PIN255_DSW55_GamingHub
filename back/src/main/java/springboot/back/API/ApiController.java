@@ -11,6 +11,7 @@ import springboot.back.Modelo.Jogo;
 import springboot.back.Repositorio.ConquistaRepository;
 import springboot.back.Repositorio.JogoRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -26,8 +27,8 @@ public class ApiController {
     // 76561198973296498
     // 1091500
     // 1262350
-//    DROP SCHEMA public CASCADE;
-//    CREATE SCHEMA public;
+    /*DROP SCHEMA public CASCADE;
+    CREATE SCHEMA public;*/
     //http://localhost:8080/api/playerGames/76561198973296498
     //http://localhost:8080/api/games
     //http://localhost:8080/api/playerAchievements/76561198973296498/1091500
@@ -63,18 +64,29 @@ public class ApiController {
     public void setarConquistas(){
         for(int i =1;i<= jogoRepository.count();i++) {
             int count = 0;
-            Jogo jogo = jogoRepository.findById(i).get();
-            for (int j = 1; j <= conquistaRepository.count(); j++) {
-                Conquista conquista = conquistaRepository.findById(j).get();
-                if (jogo.getAppId() == conquista.getAppId()) {
-                    jogo.setSteamId(conquista.getSteamId());
+            if (jogoRepository.existsById(i)) {
+                Jogo jogo = jogoRepository.findById(i).get();
+                List<Conquista> temp = conquistaRepository.findByAppId(jogo.getAppId());
+                for(Conquista c: temp){
                     count++;
+                    jogo.addConquistasJogo(c);
+                    c.setJogo(jogo);
+                    conquistaRepository.save(c);
                 }
-
+                jogo.setN_conquistas(count);
+                jogo.conquistasFinalizadas(conquistaRepository.findAll());
+                jogoRepository.save(jogo);
             }
-            jogo.setN_conquistas(count);
-            jogo.conquistasFinalizadas(conquistaRepository.findAll());
-            jogoRepository.save(jogo);
         }
+    }
+    @GetMapping("/deleteEmpty")
+    public void deleteEmpty(){
+        List<Integer> ids = new ArrayList<>();
+        for(int i =1;i<= jogoRepository.count();i++) {
+            Jogo jogo = jogoRepository.findById(i).get();
+            if(jogo.getNome()==null||jogo.getNome().isEmpty())
+                ids.add(jogo.getJogoId());
+        }
+        jogoRepository.deleteAllById(ids);
     }
 }

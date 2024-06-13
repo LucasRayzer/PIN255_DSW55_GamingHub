@@ -35,16 +35,19 @@ public class ComandoAutomatiza {
         //webClient.get().uri("http://localhost:8080/user/associar").retrieve().bodyToMono(String.class).block();
     }
     public void executeCommands2(String steamId){
-        for(int i=1;i<= jogoRepository.count();i++){
-            Jogo jogo = jogoRepository.findById(i).get();
-            if(jogo.getNome() != null)
-                if(!jogo.getNome().isEmpty()||!jogo.getNome().isBlank())
-                    webClient.get().uri("http://localhost:8080/api/playerAchievements/" + steamId + "/" + jogo.getAppId()).retrieve().bodyToMono(String.class).block();
+        for(int i=1;i<= jogoRepository.count();i++) {
+            if (jogoRepository.existsById(i)) {
+                Jogo jogo = jogoRepository.findById(i).get();
+                if (jogo.getNome() != null)
+                    if (!jogo.getNome().isEmpty() || !jogo.getNome().isBlank())
+                        webClient.get().uri("http://localhost:8080/api/playerAchievements/" + steamId + "/" + jogo.getAppId()).retrieve().bodyToMono(String.class).block();
+            }
         }
+        webClient.get().uri("http://localhost:8080/api/setConquistas").retrieve().bodyToMono(String.class).block();
+        webClient.get().uri("http://localhost:8080/api/deleteEmpty").retrieve().bodyToMono(String.class).block();
     }
 
-    public void executeCommands3() {
-        webClient.get().uri("http://localhost:8080/jogo/associar").retrieve().bodyToMono(String.class).block();
-        webClient.get().uri("http://localhost:8080/api/setConquistas").retrieve().bodyToMono(String.class).block();
-    }
+//    public void executeCommands3() {
+//        webClient.get().uri("http://localhost:8080/api/setConquistas").retrieve().bodyToMono(String.class).block();
+//    }
 }
