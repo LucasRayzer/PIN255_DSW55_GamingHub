@@ -27,6 +27,17 @@ public class Jogo {
     @OneToMany(mappedBy = "jogo")
     private Set<UsuarioJogo> usuarioJogos;
 
+    @OneToOne(mappedBy = "jogo")
+    private Trofeu trofeu;
+
+    public Trofeu getTrofeu() {
+        return trofeu;
+    }
+
+    public void setTrofeu(Trofeu trofeu) {
+        this.trofeu = trofeu;
+    }
+
     public Set<UsuarioJogo> getUsuarioJogos() {
         return usuarioJogos;
     }
@@ -117,10 +128,10 @@ public class Jogo {
     }
     //calcula as conquistas finalizadas do jogo
     public void conquistasFinalizadas(List<Conquista> conquistas){
-        for(int i=0;i<conquistas.size();i++){
-            if(conquistas.get(i).getAppId()==getAppId()&&conquistas.get(i).getConquistaConcluida()==1){
+        conquistas.forEach(conquista ->{
+            if(conquista.getAppId()==getAppId()&&conquista.getConquistaConcluida()==1){
                 f_conquistas++;
             }
-        }
+        });
     }
 }

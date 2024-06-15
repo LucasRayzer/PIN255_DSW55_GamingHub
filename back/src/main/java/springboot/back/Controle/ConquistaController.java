@@ -11,8 +11,10 @@ import springboot.back.Modelo.Trofeu;
 import springboot.back.Repositorio.ConquistaRepository;
 import springboot.back.Repositorio.JogoRepository;
 import springboot.back.Repositorio.TrofeuRepository;
+import springboot.back.Service.ConquistaService;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,52 +24,55 @@ public class ConquistaController {
     @Autowired
     private ConquistaRepository conquistaRepository;
     @Autowired
+    private ConquistaService conquistaService;
+    @Autowired
     private JogoRepository jogoRepository;
-
     @GetMapping("/all")
     public List<Conquista> getAllConquista(){
-        return conquistaRepository.findAll();
+        List<Conquista> temp = conquistaRepository.findAll();
+        conquistaRepository.findAll().forEach(conquista -> {
+            conquista.setJogo(null);
+            temp.add(conquista);
+        });
+        return temp;
     }
     @GetMapping("/{id}")
-    public Conquista getConquistaById(@PathVariable int id){
-        return conquistaRepository.findById(id).get();
+    public Conquista getConquistaById(@PathVariable int id) throws Exception{
+        if(conquistaRepository.existsById(id)){
+            Conquista conquista = conquistaRepository.findById(id).get();
+            conquista.setJogo(null);
+            return conquista;
+        }
+        else
+            throw new Exception("Não foi possível encontrar a conquista");
     }
-
-//    @PostMapping("/create")
-//    public ResponseEntity<Conquista> createConquista(@Valid @RequestBody Conquista conquista){
-//        Conquista savedConquista = conquistaRepository.save(conquista);
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-//                .path("/{id}")
-//                .buildAndExpand(savedConquista.getIdConquista())
-//                .toUri();
-//        return ResponseEntity.created(location).build();
-//    }
-//    //POST /api/conquista/associar?conquistaId=1&jogoId=2
-//    @PostMapping("/associar")
-//    public ResponseEntity<Conquista> associarConquistaJogo(@RequestParam int conquistaId, @RequestParam int jogoId){
-//        Conquista conquista = conquistaRepository.findById(conquistaId).get();
-//        Jogo jogo = jogoRepository.findById(jogoId).get();
-//        conquista.setJogo(jogo);
-//        conquistaRepository.save(conquista);
-//        return ResponseEntity.ok(conquista);
-//    }
-//    @GetMapping("/associate")
-//    public List<Conquista> associarConquista(){
-//        for(int i=1;i<conquistaRepository.count()+1;i++){
-//            Conquista conquista= conquistaRepository.findById(i).get();
-//            for(int j=1;j< jogoRepository.count()+1;j++){
-//                Jogo jogo = jogoRepository.findById(j).get();
-//                if(conquista.getAppId()== jogo.getAppId()){
-//                    conquista.setJogo(jogo);
-//                    conquistaRepository.save(conquista);
-//                }
-//            }
-//        }
-//        return conquistaRepository.findAll();
-//    }
-//    @GetMapping("/{id}/trofeu")
-//    public List<Trofeu> listarTrofeusConquista(@PathVariable int id){
-//        Optional<Conquista> conquista = conquistaRepository.findById(id);
-//        return conquista.get().getTrofeusFinalizados();
-//    }
+    @GetMapping("/appId/{appId}")
+    public List<Conquista> getConquistaByAppId(@PathVariable int appId){
+        List<Conquista> temp= new ArrayList<>();
+        conquistaRepository.findByAppId(appId).forEach(conquista -> {
+            conquista.setJogo(null);
+            temp.add(conquista);
+        });
+        return temp;
+    }
+    @GetMapping("/jogo/{id}")
+    public List<Conquista> getConquistaByJogo(@PathVariable int id){
+        List<Conquista> temp= new ArrayList<>();
+        Jogo jogo = jogoRepository.findById(id).get();
+        conquistaRepository.findByJogo(jogo).forEach(conquista -> {
+            conquista.setJogo(null);
+            temp.add(conquista);
+        });
+        return temp;
+    }
+    @GetMapping("/jogoNome/{nome}")
+    public List<Conquista> getConquistaByNomeJogo(@PathVariable String nome){
+        List<Conquista> temp= new ArrayList<>();
+        Jogo jogo = jogoRepository.findByNome(nome);
+        conquistaRepository.findByJogo(jogo).forEach(conquista -> {
+            conquista.setJogo(null);
+            temp.add(conquista);
+        });
+        return temp;
+    }
 }

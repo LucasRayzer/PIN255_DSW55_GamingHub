@@ -24,9 +24,4 @@ public class AutomatizaController {
         comandoAutomatiza.executeCommands2(steamId);
         return "Funcionou";
     }
-//    @GetMapping("/api/executeCommands3")
-//    public String executeCommands3() {
-//        comandoAutomatiza.executeCommands3();
-//        return "Funcionou";
-//    }
 }

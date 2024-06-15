@@ -11,8 +11,10 @@ import springboot.back.Modelo.Trofeu;
 import springboot.back.Repositorio.ConquistaRepository;
 import springboot.back.Repositorio.JogoRepository;
 import springboot.back.Repositorio.TrofeuRepository;
+import springboot.back.Service.TrofeuService;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,41 +23,57 @@ public class TrofeuController {
     @Autowired
     private TrofeuRepository trofeuRepository;
     @Autowired
-    private JogoRepository jogoRepository;
-    @Autowired
-    private ConquistaRepository conquistaRepository;
-
+    private TrofeuService trofeuService;
+    @Autowired JogoRepository jogoRepository;
     @GetMapping("/all")
     public List<Trofeu> getAllTrofeus(){
-        return trofeuRepository.findAll();
+        List<Trofeu> temp = new ArrayList<>();
+        trofeuRepository.findAll().forEach(trofeu -> {
+            trofeu.setJogo(null);
+            temp.add(trofeu);
+        });
+        return temp;
     }
     @GetMapping("/{id}")
-    public Trofeu getTrofeuById(@PathVariable int id){
-        return trofeuRepository.findById(id).get();
-    }
-    @PostMapping("/create")
-    public ResponseEntity<Trofeu> createTrofeu(@Valid @RequestBody Trofeu trofeu){
-        Trofeu savedTrofeu = trofeuRepository.save(trofeu);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedTrofeu.getId())
-                .toUri();
-        return ResponseEntity.created(location).build();
-    }
-    //calcula se o jogo tem todas as conquistas concluidas e adiciona o troféu
-    @GetMapping("/associar")
-    public List<Trofeu> associarTrofeuComConquista(){
-        for(int i=1;i<= jogoRepository.count();i++){
-            if(jogoRepository.existsById(i)) {
-                Jogo jogo = jogoRepository.findById(i).get();
-                Trofeu trofeu = new Trofeu();
-                trofeu.setAppId(jogo.getAppId());
-                if (jogo.getF_conquistas() == jogo.getN_conquistas()&&jogo.getN_conquistas()!=0) {
-                    trofeu.setTrofeuPrata(true);
-                }
-                trofeuRepository.save(trofeu);
-            }
+    public Trofeu getTrofeuById(@PathVariable int id) throws Exception{
+        if(trofeuRepository.existsById(id)){
+            Trofeu trofeu = trofeuRepository.findById(id).get();
+            trofeu.setJogo(null);
+            return trofeu;
         }
-        return trofeuRepository.findAll();
+        else
+            throw new Exception("Não foi possível localizar o troféu");
+    }
+    @GetMapping("/appId/{appId}")
+    public Trofeu getTrofeuByAppId(@PathVariable int appId) throws Exception{
+        Trofeu trofeu= trofeuRepository.findByAppId(appId);
+        if(trofeu!=null){
+            trofeu.setJogo(null);
+            return trofeu;
+        }
+        else
+            throw new Exception("Não foi possível localizar o troféu");
+    }
+    @GetMapping("/jogo/{id}")
+    public Trofeu getTrofeuByJogo(@PathVariable int id) throws Exception{
+        Jogo jogo = jogoRepository.findById(id).get();
+        Trofeu trofeu= trofeuRepository.findByJogo(jogo);
+        if(trofeu!=null){
+            trofeu.setJogo(null);
+            return trofeu;
+        }
+        else
+            throw new Exception("Não foi possível localizar o troféu");
+    }
+    @GetMapping("/jogoNome/{nome}")
+    public Trofeu getTrofeuByNomeJogo(@PathVariable String nome) throws Exception{
+        Jogo jogo = jogoRepository.findByNome(nome);
+        Trofeu trofeu= trofeuRepository.findByJogo(jogo);
+        if(trofeu!=null){
+            trofeu.setJogo(null);
+            return trofeu;
+        }
+        else
+            throw new Exception("Não foi possível localizar o troféu");
     }
 }

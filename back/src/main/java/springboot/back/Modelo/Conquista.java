@@ -19,9 +19,6 @@ public class Conquista {
     private int conquistaConcluida;
     private Instant unlockTime;
 
-    @ManyToMany(mappedBy = "conquistas")
-    private List<Trofeu> trofeuFinalizados;
-
     @ManyToOne
     @JoinColumn(name = "jogo_id")
     private Jogo jogo;
@@ -71,14 +68,6 @@ public class Conquista {
 
     public void setUnlockTime(Instant unlockTime) {
         this.unlockTime = unlockTime;
-    }
-
-    public List<Trofeu> getTrofeuFinalizados() {
-        return trofeuFinalizados;
-    }
-
-    public void setTrofeuFinalizados(List<Trofeu> trofeuFinalizados) {
-        this.trofeuFinalizados = trofeuFinalizados;
     }
 
     public Jogo getJogo() {

@@ -51,6 +51,7 @@ public class ApiService {
         Jogo jogoE = new Jogo();
         jogoE.setAppId(jogoR.getAppId());
         jogoE.setTempoDeJogo(jogoR.getPlaytimeForever());
+        jogoE.setJogoFavorito(false);
         jogoE.setSteamId(steamId);
         updateGameDetails(jogoE);
         return jogoE;

@@ -1,9 +1,8 @@
 package springboot.back.Modelo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 public class Acesso {
@@ -12,19 +11,30 @@ public class Acesso {
     private Integer id;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dataAcesso;
-
+    private LocalDateTime dataAcesso;
+    private String nomeUsuario;
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
-
+    @PrePersist
+    protected void onCreate(){
+        this.dataAcesso= LocalDateTime.now();
+    }
     public Acesso() {
     }
 
-    public Acesso(Integer id, Date dataAcesso, Usuario usuario) {
+    public Acesso(Integer id, LocalDateTime dataAcesso, Usuario usuario) {
         this.id = id;
         this.dataAcesso = dataAcesso;
         this.usuario = usuario;
+    }
+
+    public String getNomeUsuario() {
+        return nomeUsuario;
+    }
+
+    public void setNomeUsuario(String nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
     }
 
     public Integer getId() {
@@ -35,11 +45,11 @@ public class Acesso {
         this.id = id;
     }
 
-    public Date getDataAcesso() {
+    public LocalDateTime getDataAcesso() {
         return dataAcesso;
     }
 
-    public void setDataAcesso(Date dataAcesso) {
+    public void setDataAcesso(LocalDateTime dataAcesso) {
         this.dataAcesso = dataAcesso;
     }
 
@@ -52,10 +62,10 @@ public class Acesso {
     }
 
     public void atualizarRankingJogador() {
-        // Implementação do método
+        //usuario controller
     }
 
     public void atualizaTempoLogin() {
-        // Implementação do método
+        //acesso controller
     }
 }

@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import springboot.back.Modelo.Conquista;
 import springboot.back.Modelo.Jogo;
+import springboot.back.Modelo.Trofeu;
 import springboot.back.Repositorio.ConquistaRepository;
 import springboot.back.Repositorio.JogoRepository;
+import springboot.back.Repositorio.TrofeuRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 @RequestMapping("/api")
@@ -23,6 +26,8 @@ public class ApiController {
     private ConquistaRepository conquistaRepository;
     @Autowired
     private JogoRepository jogoRepository;
+    @Autowired
+    private TrofeuRepository trofeuRepository;
 
     // 76561198973296498
     // 1091500
@@ -60,33 +65,42 @@ public class ApiController {
     public List<Conquista> getAllAchievements(){
         return conquistaRepository.findAll();
     }
-    @GetMapping("/setConquistas")
-    public void setarConquistas(){
-        for(int i =1;i<= jogoRepository.count();i++) {
-            int count = 0;
-            if (jogoRepository.existsById(i)) {
-                Jogo jogo = jogoRepository.findById(i).get();
-                List<Conquista> temp = conquistaRepository.findByAppId(jogo.getAppId());
-                for(Conquista c: temp){
-                    count++;
-                    jogo.addConquistasJogo(c);
-                    c.setJogo(jogo);
-                    conquistaRepository.save(c);
-                }
-                jogo.setN_conquistas(count);
-                jogo.conquistasFinalizadas(conquistaRepository.findAll());
-                jogoRepository.save(jogo);
+    @GetMapping("/set")
+    public void  setar(){
+        jogoRepository.findAll().forEach(jogo-> {
+            AtomicInteger count = new AtomicInteger();
+            conquistaRepository.findByAppId(jogo.getAppId()).forEach(conquista -> {
+                count.getAndIncrement();
+                jogo.addConquistasJogo(conquista);
+                conquista.setJogo(jogo);
+                conquistaRepository.save(conquista);
+            });
+            jogo.setN_conquistas(count.get());
+            jogo.conquistasFinalizadas(conquistaRepository.findAll());
+            Trofeu trofeu = new Trofeu();
+            trofeu.setTrofeuPrata(false);
+            trofeu.setTrofeuOuro(false);
+            trofeu.setAppId(jogo.getAppId());
+            int temp= jogo.getN_conquistas()/2;
+            if(jogo.getF_conquistas()>=temp)
+                trofeu.setTrofeuPrata(true);
+            if(jogo.getN_conquistas()==jogo.getF_conquistas()) {
+                trofeu.setTrofeuOuro(true);
+                trofeu.setTrofeuPrata(true);
             }
-        }
+            trofeu.setJogo(jogo);
+            trofeuRepository.save(trofeu);
+            jogoRepository.save(jogo);
+        });
     }
     @GetMapping("/deleteEmpty")
     public void deleteEmpty(){
         List<Integer> ids = new ArrayList<>();
-        for(int i =1;i<= jogoRepository.count();i++) {
-            Jogo jogo = jogoRepository.findById(i).get();
-            if(jogo.getNome()==null||jogo.getNome().isEmpty())
+        jogoRepository.findAll().forEach(jogo -> {
+            if (jogo.getNome() == null || jogo.getNome().isEmpty()) {
                 ids.add(jogo.getJogoId());
-        }
+            }
+        });
         jogoRepository.deleteAllById(ids);
     }
 }

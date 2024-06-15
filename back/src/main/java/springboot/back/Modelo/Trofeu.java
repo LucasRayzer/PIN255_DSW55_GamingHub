@@ -11,22 +11,15 @@ public class Trofeu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "jogo_id")
-    private Jogo jogoFinalizado;
+    private Jogo jogo;
 
     private Boolean trofeuOuro;
 
     private Boolean trofeuPrata;
     private int appId;
 
-    @ManyToMany
-    @JoinTable(
-            name = "trofeu_conquista",
-            joinColumns = @JoinColumn(name = "trofeu_id"),
-            inverseJoinColumns = @JoinColumn(name = "conquista_id")
-    )
-    private List<Conquista> conquistas;
 
     public Integer getId() {
         return id;
@@ -36,12 +29,12 @@ public class Trofeu {
         this.id = id;
     }
 
-    public Jogo getJogoFinalizado() {
-        return jogoFinalizado;
+    public Jogo getJogo() {
+        return jogo;
     }
 
-    public void setJogoFinalizado(Jogo jogoFinalizado) {
-        this.jogoFinalizado = jogoFinalizado;
+    public void setJogo(Jogo jogo) {
+        this.jogo = jogo;
     }
 
     public Boolean getTrofeuOuro() {
@@ -58,14 +51,6 @@ public class Trofeu {
 
     public void setTrofeuPrata(Boolean trofeuPrata) {
         this.trofeuPrata = trofeuPrata;
-    }
-
-    public List<Conquista> getConquistas() {
-        return conquistas;
-    }
-
-    public void setConquistas(List<Conquista> conquistas) {
-        this.conquistas = conquistas;
     }
 
     public int getAppId() {

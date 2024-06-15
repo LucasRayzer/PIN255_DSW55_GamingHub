@@ -89,26 +89,26 @@ public class Usuario {
     }
 
     public void conectarSteam() {
-        // Implementação do método
+        // UsuarioController
     }
 
     public void ocultarJogo(Jogo jogo) {
-        // Implementação do método
+
     }
 
     public void alterarApelido() {
-        // Implementação do método
+        // UsuarioController
     }
 
     public void editarNotaJogo(Jogo jogo) {
-        // Implementação do método
+        // JogoController
     }
 
     public void defineNotaJogo(Jogo jogo) {
-        // Implementação do método
+        // JogoController
     }
 
     public void exibeConquistaJogo(Jogo jogo) {
-        // Implementação do método
+        // JogoController
     }
 }
