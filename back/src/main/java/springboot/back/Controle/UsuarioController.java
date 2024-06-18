@@ -140,6 +140,15 @@ public class UsuarioController {
         });
         return temp;
     }
+    @GetMapping("/nome/{username}")
+    public Usuario getUserByName(@PathVariable String username) throws Exception{
+        Usuario usuario = usuarioRepository.findByNomeUsuario(username);
+        if(usuario!=null)
+            return usuario;
+        else
+            throw new Exception("Usuario não foi encontrado");
+    }
+
     @GetMapping("/{id}/apelido/{apelido}")
     public Usuario setApelido(@PathVariable int id, @PathVariable String apelido){
         Usuario usuario = usuarioRepository.findById(id).get();
