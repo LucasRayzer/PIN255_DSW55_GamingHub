@@ -143,6 +143,7 @@ public class UsuarioController {
     @GetMapping("/nome/{username}")
     public Usuario getUserByName(@PathVariable String username) throws Exception{
         Usuario usuario = usuarioRepository.findByNomeUsuario(username);
+        usuario.setAcessos(null);
         if(usuario!=null)
             return usuario;
         else

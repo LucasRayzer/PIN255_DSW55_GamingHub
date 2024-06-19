@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ApelidoTitle, ConfigBlock, ConfigImage, HeaderContainer, HomeHeader, LibraryImage, LofOffImage, LogoImage, RankingBox, SteamImage } from "./HeaderMenu.styles";
 import { useNavigate } from 'react-router-dom';
 import LibLogo from '../../assets/images/LibLogo.png';
 import SteamLogo from '../../assets/images/SteamLogo.png';
 import ConfigLogo from '../../assets/images/ConfigLogo.png';
 import LogOut from '../../assets/images/LogOut.png';
+import AuthContext from "../../AuthContext";
 
 export function NavHeader({ avatar }) {
   const navigate = useNavigate();
-
+  const { authData } = useContext(AuthContext);
   const [ranking, setRanking] = useState(0);
 
   // Função simulada para buscar dados do ranking
@@ -26,7 +27,7 @@ export function NavHeader({ avatar }) {
       <HeaderContainer>
         <LogoImage onClick={() => navigate('/homepage')}
           src={avatar} alt='Logo' />
-        <ApelidoTitle>Apelido do Usuário</ApelidoTitle>
+        <ApelidoTitle>{authData.apelido}</ApelidoTitle>
       </HeaderContainer>
       <RankingBox>
         {` Ranking:  #${ranking}`}
