@@ -8,6 +8,7 @@ import LibraryPage from './pages/LibraryPage/LibraryPage.ui';
 import GameDetailsPage from './pages/GameDetailsPage/GameDetailsPage.ui';
 import NotePage from './pages/NotePage/NotePage.ui';
 import SettingsPage from './pages/SettingsPage/SettingsPage.ui';
+import axios from 'axios';
 
 
 export default function TarefasApp() {
@@ -30,5 +31,3 @@ export default function TarefasApp() {
    
   );
 }
-
-
