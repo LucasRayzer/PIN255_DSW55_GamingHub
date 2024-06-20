@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ApelidoTitle, ConfigBlock, ConfigImage, HeaderContainer, HomeHeader, LibraryImage, LofOffImage, LogoImage, RankingBox, SteamImage } from "./HeaderMenu.styles";
+import { ApelidoTitle, ConfigBlock, ConfigImage, HeaderContainer, HomeHeader, LibraryImage, LogOffImage, LogoImage, RankingBox, SteamImage } from "./HeaderMenu.styles";
 import { useNavigate } from 'react-router-dom';
 import LibLogo from '../../assets/images/LibLogo.png';
 import SteamLogo from '../../assets/images/SteamLogo.png';
@@ -39,7 +39,7 @@ export function NavHeader({ avatar }) {
           src={SteamLogo} alt='Steam' />
         <ConfigImage onClick={() => navigate('/settings')}
           src={ConfigLogo} alt='Config' />
-        <LofOffImage onClick={() => navigate('/')}
+        <LogOffImage onClick={() => navigate('/')}
           src={LogOut} alt='LogOut' />
       </ConfigBlock>
     </HomeHeader>

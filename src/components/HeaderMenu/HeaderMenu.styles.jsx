@@ -75,7 +75,7 @@ export const SteamImage = styled.img.attrs({
     margin-right: 40px;
     cursor: pointer;
   `;
-  export const LofOffImage = styled.img.attrs({
+  export const LogOffImage = styled.img.attrs({
     className: "home-logoff-image",
   })`
     display: flex;
