@@ -149,13 +149,19 @@ public class UsuarioController {
         else
             throw new Exception("Usuario não foi encontrado");
     }
-
-    @GetMapping("/{id}/apelido/{apelido}")
-    public Usuario setApelido(@PathVariable int id, @PathVariable String apelido){
-        Usuario usuario = usuarioRepository.findById(id).get();
+    @GetMapping("/nome/{username}/senha/{senha}")
+    public String setSenhaByNome(@PathVariable String username, @PathVariable String senha){
+        Usuario usuario = usuarioRepository.findByNomeUsuario(username);
+        usuario.setSenha(senha);
+        usuarioRepository.save(usuario);
+        return usuario.getSenha();
+    }
+    @GetMapping("/nome/{username}/apelido/{apelido}")
+    public String setApelidoByNome(@PathVariable String username, @PathVariable String apelido){
+        Usuario usuario = usuarioRepository.findByNomeUsuario(username);
         usuario.setApelido(apelido);
         usuarioRepository.save(usuario);
-        return usuario;
+        return usuario.getApelido();
     }
     @GetMapping("/{id}/ranking")
     public AtomicInteger rankingUser(@PathVariable int id){

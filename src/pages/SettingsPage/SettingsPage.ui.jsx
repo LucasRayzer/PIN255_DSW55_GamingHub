@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   SettingsPageContainer, 
@@ -10,12 +10,14 @@ import { NavHeader } from '../../components/HeaderMenu/HeaderMenu.ui';
 import NicknameChangeModal from '../../components/Modals/NickNameChangeModal/NickNameChangeModal.ui';
 import PasswordChangeModal from '../../components/Modals/PasswordChangeModal/PasswordChangeModal.ui';
 import AvatarChangeModal from '../../components/Modals/AvatarChangeModal/AvatarChangeModal.ui';
+import AuthContext from '../../AuthContext';
 
 export default function SettingsPage() {
   const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
-  const [avatar, setAvatar] = useState('/path/to/default/avatar.png'); // caminho do avatar padrão
+  const { authData, setAuthData } = useContext(AuthContext);
+  //const [avatar, setAvatar] = useState('/path/to/default/avatar.png'); // caminho do avatar padrão
 
   const navigate = useNavigate();
 
@@ -44,12 +46,13 @@ export default function SettingsPage() {
   };
 
   const handleSaveAvatar = (newAvatar) => {
-    setAvatar(newAvatar);
+    setAuthData({ ...authData, avatar: newAvatar});
+    console.log(authData.avatar)
   };
 
   return (
     <SettingsPageContainer>
-      <NavHeader avatar={avatar} />
+      <NavHeader avatar={authData.avatar} />
       <SettingsPageBodyContainer>
         <ButtonContainer>
           <ActionButton onClick={handleNicknameChange}>Alterar Apelido</ActionButton>

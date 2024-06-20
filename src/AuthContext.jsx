@@ -7,7 +7,8 @@ export const AuthProvider = ({ children }) => {
     apelido: '',
     nomeUsuario: '',
     senha: '',
-    steamId:''
+    steamId:'',
+    avatar: ''
   });
 
   return (

@@ -26,7 +26,7 @@ export function NavHeader({ avatar }) {
     <HomeHeader>
       <HeaderContainer>
         <LogoImage onClick={() => navigate('/homepage')}
-          src={avatar} alt='Logo' />
+          src={authData.avatar} alt='Logo' />
         <ApelidoTitle>{authData.apelido}</ApelidoTitle>
       </HeaderContainer>
       <RankingBox>

@@ -1,16 +1,29 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ModalContainer, ModalContent, ModalInput, ModalButtonContainer, CancelButton, SaveButton, ModalTitle } from './PasswordChangeModal.styles';
+import AuthContext from '../../../AuthContext';
+import axios from 'axios';
 
 export default function PasswordChangeModal({ isOpen, onClose }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const { authData, setAuthData } = useContext(AuthContext);
 
+
+  async function setSenha(){
+    try {
+      const response = await axios.get(`http://localhost:8080/user/nome/${authData.nomeUsuario}/senha/${password}`);
+      console.log(response.data)
+      setAuthData({...authData, senha: password})
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const handleSave = () => {
     if (password !== confirmPassword) {
       alert('As senhas não coincidem');
       return;
     }
-    // Lógica para salvar a nova senha
+    setSenha();
     console.log('Nova senha:', password);
     onClose();
   };

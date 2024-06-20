@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { CancelButton, ModalButtonContainer, ModalContainer, ModalContent, ModalInput, ModalTitle, SaveButton } from './NickNameChangeModal.styles';
+import AuthContext from '../../../AuthContext';
+import axios from 'axios';
 
 
 export default function NicknameChangeModal({ isOpen, onClose }) {
   const [nickname, setNickname] = useState('');
+  const { authData, setAuthData } = useContext(AuthContext);
 
+  async function setApelido(){
+    try {
+      const response = await axios.get(`http://localhost:8080/user/nome/${authData.nomeUsuario}/apelido/${nickname}`);
+      console.log(response.data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const handleSave = () => {
-    // Lógica para salvar o novo apelido
+    setApelido();
+    setAuthData({ ...authData, apelido: nickname});
     console.log('Novo apelido:', nickname);
     onClose();
   };
