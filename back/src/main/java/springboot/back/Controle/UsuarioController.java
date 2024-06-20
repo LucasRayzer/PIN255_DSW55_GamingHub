@@ -118,6 +118,7 @@ public class UsuarioController {
             j.setUsuarioJogos(null);
             temp.add(j);
         }
+
         return ResponseEntity.ok(temp);
     }
     @PutMapping("/{usuarioId}")
@@ -144,6 +145,7 @@ public class UsuarioController {
     public Usuario getUserByName(@PathVariable String username) throws Exception{
         Usuario usuario = usuarioRepository.findByNomeUsuario(username);
         usuario.setAcessos(null);
+        usuario.setUsuarioJogos(null);
         if(usuario!=null)
             return usuario;
         else

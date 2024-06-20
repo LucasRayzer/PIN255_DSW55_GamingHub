@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importe useNavigate
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { 
   LibraryPageContainer, 
   LibraryBodyContainer, 
@@ -20,34 +21,57 @@ import {
   TrophyContainer
 } from './LibraryPage.styles';
 import { NavHeader } from '../../components/HeaderMenu/HeaderMenu.ui';
+import AuthContext from '../../AuthContext';
 
+const fetchLibraryData = async (steamId) => {
+  try {
+    const response = await axios.get(`http://localhost:8080/user/steamId/76561198973296498/jogos`); //ta mockado pro meu perfil pq não quero ficar fazendo login o tempo todo na aplicacao
+    const games = response.data.map(game => ({
+      id: game.jogoId,
+      name: game.nome,
+      image: `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appId}/capsule_184x69.jpg`,
+      achievements: `${game.f_conquistas}/${game.n_conquistas}`,
+      completion: game.n_conquistas > 0 ? `${((game.f_conquistas / game.n_conquistas) * 100).toFixed(2)}%` : '0%',
+      favorite: game.jogoFavorito,
+      completos: game.f_conquistas,
+      totais: game.n_conquistas,
+    }));
+    const favorites = games.filter(game => game.favorite);
+    const totalAchievements = games.reduce((total, game) => total + game.totais, 0);
+    console.log(totalAchievements);
+    const acquiredAchievements = games.reduce((total, game) => total + game.completos, 0);
 
-// Função mock para buscar dados do banco de dados
-const fetchLibraryData = async () => {
-  return {
-    games: [
-      { id: 1, name: "Counter Strike 2", image: "https://via.placeholder.com/40", achievements: "15/16", completion: "94%" },
-      { id: 2, name: "Counter Strike 2", image: "https://via.placeholder.com/40", achievements: "15/16", completion: "94%" },
-      // Adicione mais jogos conforme necessário
-    ],
-    trophies: 4,
-    totalAchievements: 144,
-    favorites: [
-      { id: 1, name: "Counter Strike 2", image: "https://via.placeholder.com/40", achievements: "15/16", completion: "94%" }
-      // Adicione mais jogos favoritos conforme necessário
-    ],
-    rank: 21,
-    acquiredAchievements: 135,
-  };
+    return {
+      games: games,
+      trophies: favorites.length, // Contagem de jogos favoritos como trofeus (temporario)
+      totalAchievements: totalAchievements,
+      acquiredAchievements: acquiredAchievements,
+      favorites: favorites,
+      rank: 21, // Tá mockado
+    };
+  } catch (error) {
+    console.error('Erro ao buscar dados da API', error);
+    return {
+      games: [],
+      trophies: 0,
+      totalAchievements: 0,
+      acquiredAchievements: 0,
+      favorites: [],
+      rank: 0,
+    };
+  }
 };
 
 export default function LibraryPage() {
-  const [data, setData] = useState({ games: [], trophies: 0, totalAchievements: 0, favorites: [], rank: 0, acquiredAchievements: 0 });
-  const navigate = useNavigate(); // Utilize o hook useNavigate
-
+  const [data, setData] = useState({ games: [], trophies: 0, totalAchievements: 0, acquiredAchievements: 0, favorites: [], rank: 0 });
+  const [trophies, setTrophies] = useState({ prata: 0, ouro: 0}); // vou usar pra pegar os troféus dps
+  const [rank, setRank] = useState(0); // mesma coisa com o rank
+  const navigate = useNavigate();
+  const { authData, setAuthData } = useContext(AuthContext);
   useEffect(() => {
     const getData = async () => {
-      const result = await fetchLibraryData();
+      const steamId= authData.steamId;
+      const result = await fetchLibraryData(steamId);
       setData(result);
     };
 
@@ -55,7 +79,7 @@ export default function LibraryPage() {
   }, []);
 
   const handleItemClick = (id) => {
-    navigate(`/game/${id}`); // Navegue para a página do jogo com o id do jogo
+    navigate(`/game/${id}`);
   };
 
   return (

@@ -124,9 +124,9 @@ public class JogoController {
         jogoRepository.save(jogo);
         return jogo.getNotaJogo();
     }
-    @GetMapping("/{id}/jogoFavorito")
-    public boolean setJogoFavorito(@PathVariable int id) {
-        Jogo jogo = jogoRepository.findById(id).get();
+    @GetMapping("/{nome}/jogoFavorito")
+    public boolean setJogoFavorito(@PathVariable String nome) {
+        Jogo jogo = jogoRepository.findByNome(nome);
         if (jogo.getJogoFavorito())
             jogo.setJogoFavorito(false);
         else
@@ -134,4 +134,5 @@ public class JogoController {
         jogoRepository.save(jogo);
         return jogo.getJogoFavorito();
     }
+
 }

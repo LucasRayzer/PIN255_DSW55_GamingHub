@@ -31,6 +31,7 @@ export default function LoginPage() {
         senha: response.data.senha, 
         steamId: response.data.steamId
       });
+      console.log(response.data.senha)
       setCon(response.data.senha);
       return response.data.senha;
     } catch (error) {
@@ -41,6 +42,7 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     const confirmedSenha = await getSenhaC(usuario);
+    console.log(senha, confirmedSenha)
     if (senha === confirmedSenha) {
       navigate('/homepage');
     } else {
