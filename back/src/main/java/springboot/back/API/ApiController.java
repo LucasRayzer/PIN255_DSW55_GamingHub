@@ -81,12 +81,14 @@ public class ApiController {
             trofeu.setTrofeuPrata(false);
             trofeu.setTrofeuOuro(false);
             trofeu.setAppId(jogo.getAppId());
-            int temp= jogo.getN_conquistas()/2;
-            if(jogo.getF_conquistas()>=temp)
-                trofeu.setTrofeuPrata(true);
-            if(jogo.getN_conquistas()==jogo.getF_conquistas()) {
-                trofeu.setTrofeuOuro(true);
-                trofeu.setTrofeuPrata(true);
+            if(jogo.getN_conquistas()!=0){
+                int temp= jogo.getN_conquistas()/2;
+                if(jogo.getF_conquistas()>=temp)
+                    trofeu.setTrofeuPrata(true);
+                if(jogo.getN_conquistas()==jogo.getF_conquistas()) {
+                    trofeu.setTrofeuOuro(true);
+                    trofeu.setTrofeuPrata(true);
+                }
             }
             trofeu.setJogo(jogo);
             trofeuRepository.save(trofeu);

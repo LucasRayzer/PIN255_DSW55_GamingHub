@@ -26,6 +26,7 @@ export default function LoginPage() {
     try {
       const response = await axios.get(`http://localhost:8080/user/nome/${username}`);
       setAuthData({
+        idU: response.data.usuarioId,
         apelido: response.data.apelido, 
         nomeUsuario: response.data.nomeUsuario, 
         senha: response.data.senha, 

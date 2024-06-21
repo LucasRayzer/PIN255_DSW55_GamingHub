@@ -54,8 +54,8 @@ export const Section = styled.div.attrs({
 export const GameImage = styled.img.attrs({
   className: "game-image"
 })`
-  width: 200px;
-  height: 200px;
+  width: 168px;
+  height: 69px;
   border-radius:5px;
   margin-bottom: 20px;
 `;

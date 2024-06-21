@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   GameDetailsContainer, 
@@ -21,41 +21,51 @@ import {
 } from './GameDetailsPage.styles';
 import { NavHeader } from '../../components/HeaderMenu/HeaderMenu.ui';
 
-const mockGameData = {
-  name: "Counter Strike 2",
-  ranking: 3,
-  image: "https://via.placeholder.com/100x150",
-  hoursPlayed: "2,345",
-  completion: "94%",
-  description: "For over two decades, Counter-Strike has offered an elite competitive experience...",
-  recommendationPercentage: "87% Recomendado",
-  userReview: "É bom 👍"
-};
-
 export default function GameDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const gameData = mockGameData; // Aqui você pode buscar os dados reais usando o id
+  const [gameData, setGameData] = useState(null);
+
+  useEffect(() => {
+    const fetchGameData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/jogo/${id}`);
+        const data = await response.json();
+        setGameData({
+          name: data.nome,
+          ranking: data.notaJogo || "N/A",
+          image: `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${data.appId}/capsule_184x69.jpg`, 
+          hoursPlayed: `${(data.tempoDeJogo/60).toFixed(2)} horas`, 
+          completion: `${((data.f_conquistas / data.n_conquistas) * 100).toFixed(2)}%`,
+          description: "For over two decades, Counter-Strike has offered an elite competitive experience...", 
+          recommendationPercentage: "87% Recomendado", 
+          userReview: "É bom 👍" 
+        });
+      } catch (error) {
+        console.error("Erro ao buscar os dados do jogo:", error);
+      }
+    };
+
+    fetchGameData();
+  }, [id]);
 
   const handleRateClick = () => {
     navigate(`/rate/${id}`);
   };
-  //aqui tá com erro mesmo, é pq n tem lógica, ai ele reclama, deveria em addFav adicionar a lista de favoritos, e getReward, adicionar
-  // um dos tiipos de troféus na lista de troféu do user, ou os dois se já fez 2x todas as conquistas
+
   const handleGetReward = () => {
-    // Save the note to the backend or state management
-    //aqui temos que adicionar as condicões se foi pegado recompensa sem ter concluido tudo, 
-    //o alerta tem q ser de não concluido, se pegado 2x todas as achivments, deve ser pegado o troféu de ouro, se não só o de prata
     alert(`Recompensa Resgatada!`);
-     
   };
+
   const handleAddFav = () => {
-    // Save the note to the backend or state management
-    //aqui temos que adicionar as condicões se foi pegado recompensa sem ter concluido tudo, 
-    //o alerta tem q ser de não concluido, se pegado 2x todas as achivments, deve ser pegado o troféu de ouro, se não só o de prata
+    const response = fetch(`http://localhost:8080/jogo/${gameData.name}/jogoFavorito`);
+    console.log(response);
     alert(`O jogo ${gameData.name} foi adicionado aos favoritos!`);
-     
   };
+
+  if (!gameData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <GameDetailsContainer>
@@ -74,9 +84,9 @@ export default function GameDetailsPage() {
               </GameInfoUp>
               <GameInfoDown>
                 <ActionsContainer>
-                  <ActionButton onCLick={handleAddFav}>Adicionar aos Favoritos</ActionButton>
+                  <ActionButton onClick={handleAddFav}>Adicionar aos Favoritos</ActionButton>
                   <ActionButton onClick={handleRateClick}>Atribuir Nota</ActionButton>
-                  <ActionButton onCLick={handleGetReward}>Resgatar Recompensa</ActionButton>
+                  <ActionButton onClick={handleGetReward}>Resgatar Recompensa</ActionButton>
                 </ActionsContainer>
               </GameInfoDown>
             </Section>

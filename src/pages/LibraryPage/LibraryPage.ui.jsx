@@ -43,7 +43,6 @@ const fetchLibraryData = async (steamId) => {
 
     return {
       games: games,
-      trophies: favorites.length, // Contagem de jogos favoritos como trofeus (temporario)
       totalAchievements: totalAchievements,
       acquiredAchievements: acquiredAchievements,
       favorites: favorites,
@@ -53,7 +52,6 @@ const fetchLibraryData = async (steamId) => {
     console.error('Erro ao buscar dados da API', error);
     return {
       games: [],
-      trophies: 0,
       totalAchievements: 0,
       acquiredAchievements: 0,
       favorites: [],
@@ -62,8 +60,44 @@ const fetchLibraryData = async (steamId) => {
   }
 };
 
+const fetchTrophyData = async () => {
+  try {
+    const response = await axios.get('http://localhost:8080/trofeu/all');
+    const trophies = response.data;
+
+    const goldTrophies = trophies.filter(trophy => trophy.trofeuOuro).length;
+    const silverTrophies = trophies.filter(trophy => trophy.trofeuPrata).length;
+
+    return {
+      ouro: goldTrophies,
+      prata: silverTrophies
+    };
+  } catch (error) {
+    console.error('Erro ao buscar dados dos troféus', error);
+    return {
+      ouro: 0,
+      prata: 0
+    };
+  }
+};
+
+const fetchRankData = async (id) => {
+  try {
+    const response = await axios.get(`http://localhost:8080/user/${id}/ranking`);
+    const rank = response.data;
+    return {
+      rank
+    };
+  } catch (error) {
+    console.error('Erro ao buscar dados dos troféus', error);
+    return {
+      rank: 0
+    };
+  }
+};
+
 export default function LibraryPage() {
-  const [data, setData] = useState({ games: [], trophies: 0, totalAchievements: 0, acquiredAchievements: 0, favorites: [], rank: 0 });
+  const [data, setData] = useState({ games: [], totalAchievements: 0, acquiredAchievements: 0, favorites: [], rank: 0 });
   const [trophies, setTrophies] = useState({ prata: 0, ouro: 0}); // vou usar pra pegar os troféus dps
   const [rank, setRank] = useState(0); // mesma coisa com o rank
   const navigate = useNavigate();
@@ -73,6 +107,10 @@ export default function LibraryPage() {
       const steamId= authData.steamId;
       const result = await fetchLibraryData(steamId);
       setData(result);
+      const trophyResult = await fetchTrophyData();
+      setTrophies(trophyResult);
+      const rankResult = await fetchRankData(authData.idU);
+      setRank(rankResult)
     };
 
     getData();
@@ -89,7 +127,7 @@ export default function LibraryPage() {
         <ColumnsContainer>
           <LeftColumn>
             <Section>
-              <SectionTitle>Seus jogos</SectionTitle>
+              <SectionTitle>Seus jogos {data.length}</SectionTitle>
               <List>
                 {data.games.map((game, index) => (
                   <ListItem key={index} onClick={() => handleItemClick(game.id)}>
@@ -106,14 +144,14 @@ export default function LibraryPage() {
               <SectionTitle>Trofeus/Prêmios</SectionTitle>
               <TrophyContainer>
                 <TrophyImage src="src/assets/images/GoldTrophy.png" alt="Trophy" />
-                <TrophyText>{data.trophies}</TrophyText>
+                <TrophyText>{trophies.ouro}</TrophyText>
                 <TrophyImage src="src/assets/images/SilverTrophy.png" alt="Medal" />
-                <TrophyText>{data.totalAchievements}</TrophyText>
+                <TrophyText>{trophies.prata}</TrophyText>
               </TrophyContainer>
             </TrophySection>
             <Section>
               <SectionTitle>Conquistas</SectionTitle>
-              <ConquestText>Rank: #{data.rank}</ConquestText>
+              <ConquestText>Rank: # {rank.rank}</ConquestText>
               <ConquestText>Adquiridas: {data.acquiredAchievements}</ConquestText>
               <ConquestText>Total: {data.totalAchievements}</ConquestText>
             </Section>
