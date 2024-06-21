@@ -81,19 +81,35 @@ public class ApiService {
                 .doOnNext(response -> saveAchievements(response, steamId, appId));
     }
     private void saveAchievements(ConquistaResponse response, String steamId, int appId){
-        List<Conquista> conquistas = Arrays.stream(response.getUserStats().getConquistas())
+        Arrays.stream(response.getUserStats().getConquistas())
                 .map(conquistaR -> mapToEntity(conquistaR, steamId, appId))
-                .collect(Collectors.toList());
-        conquistaRepository.saveAll(conquistas);
+                .forEach(conquistaMono -> conquistaMono
+                        .doOnNext(conquista -> conquistaRepository.save(conquista))
+                        .subscribe());
     }
 
-    private Conquista mapToEntity(ConquistaResponse.ConquistaR conquistaR, String steamId, int appId) {
-        Conquista conq = new Conquista();
-        conq.setSteamId(steamId);
-        conq.setAppId(appId);
-        conq.setNomeConquista(conquistaR.getApiName());
-        conq.setConquistaConcluida(conquistaR.getAchieved());
-        conq.setUnlockTime(Instant.ofEpochSecond(conquistaR.getUnlockTime()));
-        return conq;
+
+    private Mono<Conquista> mapToEntity(ConquistaResponse.ConquistaR conquistaR, String steamId, int appId) {
+        return webClientBuilder.build()
+                .get()
+                .uri("https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=9D94F49413553413A449F22760F36A56&appid=" + appId)
+                .retrieve()
+                .bodyToMono(GameSchemaResponse.class)
+                .map(schema -> {
+                    Conquista conq = new Conquista();
+                    conq.setSteamId(steamId);
+                    conq.setAppId(appId);
+                    schema.getGame().getAvailableGameStats().getAchievements().stream()
+                            .filter(a -> a.getName().equals(conquistaR.getApiName()))
+                            .findFirst()
+                            .ifPresent(a -> {
+                                conq.setNomeConquista(a.getDisplayName());
+                                conq.setImagem(a.getIcon());
+                            });
+                    conq.setConquistaConcluida(conquistaR.getAchieved());
+                    conq.setUnlockTime(Instant.ofEpochSecond(conquistaR.getUnlockTime()));
+                    return conq;
+                });
     }
+
 }

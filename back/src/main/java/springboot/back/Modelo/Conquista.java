@@ -15,19 +15,23 @@ public class Conquista {
 
     private String steamId;
     private int appId;
-    private String nomeConquista;
+    private String nome;
     private int conquistaConcluida;
     private Instant unlockTime;
+    private String imagem;  // Adiciona o atributo imagem
 
     @ManyToOne
     @JoinColumn(name = "jogo_id")
     private Jogo jogo;
-    public Integer getIdConquista() {
+
+    // getters e setters
+
+    public Integer getConquistaId() {
         return conquistaId;
     }
 
-    public void setIdConquista(Integer idConquista) {
-        this.conquistaId = idConquista;
+    public void setConquistaId(Integer conquistaId) {
+        this.conquistaId = conquistaId;
     }
 
     public String getSteamId() {
@@ -47,11 +51,11 @@ public class Conquista {
     }
 
     public String getNomeConquista() {
-        return nomeConquista;
+        return nome;
     }
 
     public void setNomeConquista(String nomeConquista) {
-        this.nomeConquista = nomeConquista;
+        this.nome = nomeConquista;
     }
 
     public int getConquistaConcluida() {
@@ -70,6 +74,14 @@ public class Conquista {
         this.unlockTime = unlockTime;
     }
 
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+
     public Jogo getJogo() {
         return jogo;
     }
@@ -78,3 +90,4 @@ public class Conquista {
         this.jogo = jogo;
     }
 }
+

@@ -23,6 +23,21 @@ import {
 } from './GameDetailsPage.styles';
 import { NavHeader } from '../../components/HeaderMenu/HeaderMenu.ui';
 
+const fetchAchievements = async (id) => {
+  try {
+    const response = await fetch(`http://localhost:8080/jogo/${id}/conquistas`);
+    const data = await response.json();
+    return data.map(conquista => ({
+      icon: conquista.imagem,
+      nome: conquista.nomeConquista,
+      conc: conquista.conquistaConcluida > 0 ? 'Concluida' : 'Incompleta'
+    }));
+  } catch (error) {
+    console.error("Erro ao buscar as conquistas:", error);
+    return [];
+  }
+};
+
 export default function GameDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -46,18 +61,13 @@ export default function GameDetailsPage() {
       }
     };
 
-    const fetchAchievements = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/jogo/${id}/conquistas`);
-        const data = await response.json();
-        setAchievements(data);
-      } catch (error) {
-        console.error("Erro ao buscar as conquistas:", error);
-      }
+    const fetchAndSetAchievements = async () => {
+      const achievementsData = await fetchAchievements(id);
+      setAchievements(achievementsData);
+      console.log(achievementsData)
     };
-
     fetchGameData();
-    fetchAchievements();
+    fetchAndSetAchievements();
   }, [id]);
 
   const handleRateClick = () => {
@@ -68,10 +78,19 @@ export default function GameDetailsPage() {
     alert(`Recompensa Resgatada!`);
   };
 
-  const handleAddFav = () => {
-    const response = fetch(`http://localhost:8080/jogo/${gameData.name}/jogoFavorito`);
-    console.log(response);
-    alert(`O jogo ${gameData.name} foi adicionado aos favoritos!`);
+  const handleAddFav = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/jogo/${gameData.name}/jogoFavorito`, {
+        method: 'GET',
+      });
+      if (response.ok) {
+        alert(`O jogo ${gameData.name} foi adicionado aos favoritos!`);
+      } else {
+        console.error('Erro ao adicionar o jogo aos favoritos.');
+      }
+    } catch (error) {
+      console.error('Erro ao adicionar o jogo aos favoritos:', error);
+    }
   };
 
   if (!gameData) {
@@ -109,9 +128,9 @@ export default function GameDetailsPage() {
                 {achievements.length > 0 ? (
                   achievements.map((achievement, index) => (
                     <ListAchievement key={index}>
-                      <ImageAchievement src={achievement.image} alt={achievement.name} />
-                      <AchievementName>{achievement.name}</AchievementName>
-                      <AchievementNumber>{achievement.number}</AchievementNumber>
+                      <ImageAchievement src={achievement.icon} alt={achievement.nome} />
+                      <AchievementName>{achievement.nome}</AchievementName>
+                      <AchievementNumber>{achievement.conc}</AchievementNumber>
                     </ListAchievement>
                   ))
                 ) : (
