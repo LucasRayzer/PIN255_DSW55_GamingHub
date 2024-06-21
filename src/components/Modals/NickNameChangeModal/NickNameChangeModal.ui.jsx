@@ -35,7 +35,7 @@ export default function NicknameChangeModal({ isOpen, onClose }) {
             placeholder="Novo Apelido"
           />
           <ModalButtonContainer>
-            <CancelButton onClick={onClose}>Voltar</CancelButton>
+            <CancelButton onClick={onClose}>Cancelar</CancelButton>
             <SaveButton onClick={handleSave}>Alterar</SaveButton>
           </ModalButtonContainer>
         </ModalContent>

@@ -46,7 +46,7 @@ export default function PasswordChangeModal({ isOpen, onClose }) {
             placeholder="Confirme a Nova Senha"
           />
           <ModalButtonContainer>
-            <CancelButton onClick={onClose}>Voltar</CancelButton>
+            <CancelButton onClick={onClose}>Cancelar</CancelButton>
             <SaveButton onClick={handleSave}>Alterar</SaveButton>
           </ModalButtonContainer>
         </ModalContent>
