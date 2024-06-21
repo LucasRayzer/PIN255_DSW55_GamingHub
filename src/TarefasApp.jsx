@@ -9,6 +9,7 @@ import GameDetailsPage from './pages/GameDetailsPage/GameDetailsPage.ui';
 import NotePage from './pages/NotePage/NotePage.ui';
 import SettingsPage from './pages/SettingsPage/SettingsPage.ui';
 import axios from 'axios';
+import SteamPage from './pages/StamPage.styles.jsx/SteamPage.ui';
 
 
 export default function TarefasApp() {
@@ -26,6 +27,7 @@ export default function TarefasApp() {
     <Route path="/game/:id" element={<GameDetailsPage />}/>
     <Route path="/rate/:id" element={<NotePage/>}/>
     <Route path="/settings" element={<SettingsPage/>}/>
+    <Route path='/SteamComand' element={<SteamPage/>}/>
     </Routes>
     </BrowserRouter>
    

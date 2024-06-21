@@ -12,12 +12,14 @@ import {
   GameInfo, 
   InfoText, 
   ActionsContainer, 
-  ActionButton, 
-  Description, 
-  Review, 
-  ReviewText, 
   GameInfoUp,
-  GameInfoDown
+  GameInfoDown,
+  TableWrapperAchievement,
+  ListAchievement,
+  ActionButton,
+  AchievementNumber,
+  AchievementName,
+  ImageAchievement
 } from './GameDetailsPage.styles';
 import { NavHeader } from '../../components/HeaderMenu/HeaderMenu.ui';
 
@@ -25,6 +27,7 @@ export default function GameDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [gameData, setGameData] = useState(null);
+  const [achievements, setAchievements] = useState([]);
 
   useEffect(() => {
     const fetchGameData = async () => {
@@ -37,16 +40,24 @@ export default function GameDetailsPage() {
           image: `https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${data.appId}/capsule_184x69.jpg`, 
           hoursPlayed: `${(data.tempoDeJogo/60).toFixed(2)} horas`, 
           completion: `${((data.f_conquistas / data.n_conquistas) * 100).toFixed(2)}%`,
-          description: "For over two decades, Counter-Strike has offered an elite competitive experience...", 
-          recommendationPercentage: "87% Recomendado", 
-          userReview: "É bom 👍" 
         });
       } catch (error) {
         console.error("Erro ao buscar os dados do jogo:", error);
       }
     };
 
+    const fetchAchievements = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/jogo/${id}/conquistas`);
+        const data = await response.json();
+        setAchievements(data);
+      } catch (error) {
+        console.error("Erro ao buscar as conquistas:", error);
+      }
+    };
+
     fetchGameData();
+    fetchAchievements();
   }, [id]);
 
   const handleRateClick = () => {
@@ -93,13 +104,20 @@ export default function GameDetailsPage() {
           </LeftColumn>
           <RightColumn>
             <Section>
-              <SectionTitle>Descrição</SectionTitle>
-              <Description>{gameData.description}</Description>
-            </Section>
-            <Section>
-              <SectionTitle>Revisão do Usuário</SectionTitle>
-              <ReviewText>{gameData.recommendationPercentage}</ReviewText>
-              <Review>{gameData.userReview}</Review>
+              <SectionTitle>Conquistas do Usuário</SectionTitle>
+              <TableWrapperAchievement>
+                {achievements.length > 0 ? (
+                  achievements.map((achievement, index) => (
+                    <ListAchievement key={index}>
+                      <ImageAchievement src={achievement.image} alt={achievement.name} />
+                      <AchievementName>{achievement.name}</AchievementName>
+                      <AchievementNumber>{achievement.number}</AchievementNumber>
+                    </ListAchievement>
+                  ))
+                ) : (
+                  <InfoText>Nenhuma conquista encontrada.</InfoText>
+                )}
+              </TableWrapperAchievement>
             </Section>
           </RightColumn>
         </ColumnsContainer>

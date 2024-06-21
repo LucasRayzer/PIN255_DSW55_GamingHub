@@ -142,3 +142,44 @@ export const Review = styled.div.attrs({
   padding: 10px;
   border-radius: 4px;
 `;
+export const TableWrapperAchievement = styled.div.attrs({
+  className: "table-wrapper-achievement"
+})`
+  flex: 1;
+  background-color: #0000007b;
+  padding: 10px;
+  border-radius: 8px;
+  color: white;
+ 
+`;
+export const ListAchievement = styled.div.attrs({
+  className: "list-achievement"
+})`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0;
+  padding: 10px;
+  background-color: #0000005e;
+  border-radius: 4px;
+`;
+export const ImageAchievement = styled.img.attrs({
+  className: "table-image-achievement"
+})`
+  width: 40px;
+  height: 40px;
+  border-radius: 10%;
+  margin-right: 10px;
+`;
+export const AchievementName = styled.div.attrs({
+  className: "achievement-text-name"
+})`
+  flex: 1;
+  color: white;
+`;
+export const AchievementNumber = styled.div.attrs({
+  className: "achievement-number"
+})`
+  margin-left: 10px;
+  color: white;
+`;
