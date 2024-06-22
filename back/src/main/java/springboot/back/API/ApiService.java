@@ -10,6 +10,7 @@ import springboot.back.Repositorio.ConquistaRepository;
 import springboot.back.Repositorio.JogoRepository;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,6 +68,13 @@ public class ApiService {
                 .doOnNext(detalhes -> {
                     jogo.setNome(detalhes.getNome());
                     jogoRepository.save(jogo);
+                    List<Integer> ids = new ArrayList<>();
+                    jogoRepository.findAll().forEach(jogos -> {
+                        if (jogos.getNome() == null || jogos.getNome().isEmpty()) {
+                            ids.add(jogos.getJogoId());
+                        }
+                    });
+                    jogoRepository.deleteAllById(ids);
                 })
                 .subscribe();
     }

@@ -21,7 +21,6 @@ public class ComandoAutomatiza {
     ConquistaRepository conquistaRepository;
     public void executeCommands(String steamId) {
         webClient.get().uri("http://localhost:8080/api/playerGames/" + steamId).retrieve().bodyToMono(String.class).block();
-        webClient.get().uri("http://localhost:8080/api/deleteEmpty").retrieve().bodyToMono(String.class).block();
     }
     public void executeCommands2(String steamId){
         webClient.get().uri("http://localhost:8080/api/deleteEmpty").retrieve().bodyToMono(String.class).block();

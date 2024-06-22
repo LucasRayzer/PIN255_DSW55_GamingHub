@@ -22,6 +22,6 @@ public class AutomatizaController {
     @GetMapping("/api/executeCommands2/{steamId}")
     public String executeCommands2(@PathVariable String steamId) {
         comandoAutomatiza.executeCommands2(steamId);
-        return "Funcionou";
+        return "Biblioteca Adquirida";
     }
 }
