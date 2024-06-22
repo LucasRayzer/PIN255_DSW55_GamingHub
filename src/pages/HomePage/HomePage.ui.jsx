@@ -39,7 +39,8 @@ const fetchData = async () => {
  
  export default function HomePage() {
    const [data, setData] = useState({ list1: [], list2: [], list3: [], list4: [] });
- 
+   
+
    useEffect(() => {
      const getData = async () => {
        const result = await fetchData();
@@ -48,11 +49,13 @@ const fetchData = async () => {
  
      getData();
    }, []);
+   
  
    return (
      <HomePageContainer>
        <NavHeader />
        <HomeBodyContainer>
+        
          <TablesContainer>
            <TableRow>
              <TableWrapper>

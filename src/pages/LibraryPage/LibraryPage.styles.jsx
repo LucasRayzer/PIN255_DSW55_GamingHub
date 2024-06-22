@@ -29,8 +29,6 @@ export const LeftColumn = styled.div.attrs({
   className: "left-column"
 })`
   flex: 1;
-  margin-top: 96px;
-  padding: 10px;
   border-radius: 8px;
 `;
 
@@ -141,4 +139,23 @@ export const ConquestText = styled.p.attrs({
   background-color: #0000005e;
   padding: 10px;
   border-radius: 4px;
+`;
+export const SearchContainer = styled.div.attrs({
+  className: "search-container"
+})`
+  display: flex ;
+  justify-content: flex-end;
+  padding-top:10px;
+  padding-bottom:30px;
+`;
+
+export const SearchInput = styled.input.attrs({
+  className: "search-input"
+})`
+  width: 200px;
+  padding: 8px;
+  border-radius: 4px;
+  background-color:#0000005e;
+  border: 1px solid #000000;
+  color:white;
 `;

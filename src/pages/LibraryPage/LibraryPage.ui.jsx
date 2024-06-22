@@ -18,7 +18,9 @@ import {
   TrophyImage, 
   TrophyText, 
   ConquestText,
-  TrophyContainer
+  TrophyContainer,
+  SearchContainer,
+  SearchInput
 } from './LibraryPage.styles';
 import { NavHeader } from '../../components/HeaderMenu/HeaderMenu.ui';
 import AuthContext from '../../AuthContext';
@@ -102,6 +104,7 @@ export default function LibraryPage() {
   const [rank, setRank] = useState(0); // mesma coisa com o rank
   const navigate = useNavigate();
   const { authData, setAuthData } = useContext(AuthContext);
+  const [searchTerm, setSearchTerm] = useState("");
   useEffect(() => {
     const getData = async () => {
       const steamId= authData.steamId;
@@ -119,11 +122,27 @@ export default function LibraryPage() {
   const handleItemClick = (id) => {
     navigate(`/game/${id}`);
   };
+  //searchitens
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filterData = (list) => {
+    return list.filter(item => item.text.toLowerCase().includes(searchTerm.toLowerCase()));
+  };
 
   return (
     <LibraryPageContainer>
       <NavHeader />
       <LibraryBodyContainer>
+      <SearchContainer>
+          <SearchInput
+              type="text"
+             placeholder="Buscar jogo..."
+             value={searchTerm}
+             onChange={handleSearch}
+          />
+        </SearchContainer>
         <ColumnsContainer>
           <LeftColumn>
             <Section>

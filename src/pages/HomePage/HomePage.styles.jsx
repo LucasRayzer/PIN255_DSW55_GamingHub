@@ -28,6 +28,7 @@ export const TablesContainer = styled.div.attrs({
   padding-left:30px;
   padding-right:30px;
   margin-top:80px;
+  margin-bottom:20px;
 `;
 
 export const TableRow = styled.div.attrs({
