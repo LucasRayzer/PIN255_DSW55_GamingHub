@@ -74,9 +74,6 @@ export default function GameDetailsPage() {
     navigate(`/rate/${id}`);
   };
 
-  const handleGetReward = () => {
-    alert(`Recompensa Resgatada!`);
-  };
 
   const handleAddFav = async () => {
     try {
@@ -84,7 +81,14 @@ export default function GameDetailsPage() {
         method: 'GET',
       });
       if (response.ok) {
-        alert(`O jogo ${gameData.name} foi adicionado aos favoritos!`);
+        const text = await response.text();
+        if (text === 'true') {
+          alert(`O jogo ${gameData.name} foi adicionado aos favoritos.`);
+        } else if (text === 'false') {
+          alert(`O jogo ${gameData.name} foi removido dos favoritos.`);
+        } else {
+          console.error('Resposta inesperada da API:', text);
+        }
       } else {
         console.error('Erro ao adicionar o jogo aos favoritos.');
       }
@@ -114,7 +118,7 @@ export default function GameDetailsPage() {
               </GameInfoUp>
               <GameInfoDown>
                 <ActionsContainer>
-                  <ActionButton onClick={handleAddFav}>Adicionar aos Favoritos</ActionButton>
+                  <ActionButton onClick={handleAddFav}>Favoritar/Desfavoritar</ActionButton>
                   <ActionButton onClick={handleRateClick}>Atribuir Nota</ActionButton>
                 </ActionsContainer>
               </GameInfoDown>
