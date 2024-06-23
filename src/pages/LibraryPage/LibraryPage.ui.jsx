@@ -98,22 +98,34 @@ const fetchRankData = async (id) => {
   }
 };
 
+const searchGame = async (searchTerm) => {
+  try {
+    const response = await axios.get(`http://localhost:8080/jogo/nome/${searchTerm}`);
+    return response.data.jogoId;
+  } catch (error) {
+    console.error('Erro ao buscar jogo', error);
+    return null;
+  }
+};
+
 export default function LibraryPage() {
   const [data, setData] = useState({ games: [], totalAchievements: 0, acquiredAchievements: 0, favorites: [], rank: 0 });
   const [trophies, setTrophies] = useState({ prata: 0, ouro: 0}); // vou usar pra pegar os troféus dps
   const [rank, setRank] = useState(0); // mesma coisa com o rank
+  const [searchResults, setSearchResults] = useState([]);
   const navigate = useNavigate();
   const { authData, setAuthData } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState("");
+
   useEffect(() => {
     const getData = async () => {
-      const steamId= authData.steamId;
+      const steamId = authData.steamId;
       const result = await fetchLibraryData(steamId);
       setData(result);
       const trophyResult = await fetchTrophyData();
       setTrophies(trophyResult);
       const rankResult = await fetchRankData(authData.idU);
-      setRank(rankResult)
+      setRank(rankResult);
     };
 
     getData();
@@ -122,31 +134,33 @@ export default function LibraryPage() {
   const handleItemClick = (id) => {
     navigate(`/game/${id}`);
   };
-  //searchitens
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
 
-  const filterData = (list) => {
-    return list.filter(item => item.text.toLowerCase().includes(searchTerm.toLowerCase()));
+  const handleSearch = async (event) => {
+    setSearchTerm(event.target.value);
+    if (event.target.value.trim() !== "") {
+      const result = await searchGame(event.target.value.trim());
+      console.log(result)
+      if(result!=null)
+        navigate(`/game/${result}`);
+    }
   };
 
   return (
     <LibraryPageContainer>
       <NavHeader />
       <LibraryBodyContainer>
-      <SearchContainer>
+        <SearchContainer>
           <SearchInput
-              type="text"
-             placeholder="Buscar jogo..."
-             value={searchTerm}
-             onChange={handleSearch}
+            type="text"
+            placeholder="Buscar jogo..."
+            value={searchTerm}
+            onChange={handleSearch}
           />
         </SearchContainer>
         <ColumnsContainer>
           <LeftColumn>
             <Section>
-              <SectionTitle>Seus jogos {data.length}</SectionTitle>
+              <SectionTitle>Seus jogos {data.games.length}</SectionTitle>
               <List>
                 {data.games.map((game, index) => (
                   <ListItem key={index} onClick={() => handleItemClick(game.id)}>
@@ -157,6 +171,20 @@ export default function LibraryPage() {
                 ))}
               </List>
             </Section>
+            {searchResults.length > 0 && (
+              <Section>
+                <SectionTitle>Resultados da pesquisa</SectionTitle>
+                <List>
+                  {searchResults.map((game, index) => (
+                    <ListItem key={index} onClick={() => handleItemClick(game.id)}>
+                      <ItemImage src={`https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appId}/capsule_184x69.jpg`} alt={`Search Result Game ${index + 1}`} />
+                      <ItemText>{game.nome}</ItemText>
+                      <ItemNumber>{game.f_conquistas}/{game.n_conquistas} ({game.n_conquistas > 0 ? `${((game.f_conquistas / game.n_conquistas) * 100).toFixed(2)}%` : '0%'})</ItemNumber>
+                    </ListItem>
+                  ))}
+                </List>
+              </Section>
+            )}
           </LeftColumn>
           <RightColumn>
             <TrophySection>

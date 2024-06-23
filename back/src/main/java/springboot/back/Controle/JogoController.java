@@ -134,5 +134,10 @@ public class JogoController {
         jogoRepository.save(jogo);
         return jogo.getJogoFavorito();
     }
-
+    @GetMapping("/jogadoresAtual/{appId}")
+    public int getJogadoresAtual(@PathVariable int appId){
+        Jogo jogo = jogoRepository.findByAppId(appId);
+        jogo.atualizarCurrentPlayers();
+        return jogo.getCurrentPlayers();
+    }
 }

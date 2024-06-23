@@ -45,7 +45,7 @@ export default function SteamPage() {
 
       const exec1 = await execCom1(code);
       console.log('execCom1 completed:', exec1);
-
+      const exec2 = await execCom2(code);
       if (exec1 === "Funcionou") {
         console.log("roda isso aq", `http://localhost:8080/api/executeCommands2/${code}`)
         navigate(`/homepage`);
@@ -70,7 +70,7 @@ export default function SteamPage() {
           />
           <SubmitButton onClick={handleSteamClick}>Confirm</SubmitButton>
         </CenteredContainer>
-      </SteamBodyContainer>
+    </SteamBodyContainer>
     </SteamPageContainer>
   );
 }

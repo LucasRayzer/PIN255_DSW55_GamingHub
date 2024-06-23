@@ -73,8 +73,8 @@ export const ListItem = styled.div.attrs({
 export const ItemImage = styled.img.attrs({
   className: "table-image"
 })`
-  width: 40px;
-  height: 40px;
+  width: 184px;
+  height: 69px;
   border-radius: 10%;
   margin-right: 10px;
 `;

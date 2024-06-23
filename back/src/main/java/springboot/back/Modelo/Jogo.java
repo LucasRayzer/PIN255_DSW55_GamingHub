@@ -1,8 +1,11 @@
 package springboot.back.Modelo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
-
+import java.io.IOException;
+import java.net.URL;
+import com.fasterxml.jackson.databind.JsonNode;
 import java.util.List;
 import java.util.Set;
 
@@ -20,7 +23,7 @@ public class Jogo {
     private Boolean jogoFavorito;
     private int n_conquistas;
     private int f_conquistas;
-
+    private Integer currentPlayers;
     @OneToMany(mappedBy = "jogo")
     private List<Conquista> conquistasJogo;
 
@@ -133,5 +136,32 @@ public class Jogo {
                 f_conquistas++;
             }
         });
+    }
+
+    public Integer getCurrentPlayers() {
+        return currentPlayers;
+    }
+
+    public void setCurrentPlayers(Integer currentPlayers) {
+        this.currentPlayers = currentPlayers;
+    }
+
+    public void atualizarCurrentPlayers() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            URL url = new URL("https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid="+appId);
+            JsonNode rootNode = mapper.readTree(url);
+
+            // Acessa o valor de player_count na resposta JSON
+            JsonNode responseNode = rootNode.path("response");
+            if (!responseNode.isMissingNode()) {
+                Integer playerCount = responseNode.path("player_count").asInt();
+                this.setCurrentPlayers(playerCount);
+            } else {
+                System.out.println("Resposta da API incompleta ou inválida.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
