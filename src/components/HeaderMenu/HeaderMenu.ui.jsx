@@ -30,7 +30,7 @@ export function NavHeader({ avatar }) {
         <ApelidoTitle>{authData.apelido}</ApelidoTitle>
       </HeaderContainer>
       <RankingBox>
-        {` Ranking:  #${ranking}`}
+        {` Ranking:  #${authData.rank}`}
       </RankingBox>
       <ConfigBlock>
         <LibraryImage onClick={() => navigate('/library')}

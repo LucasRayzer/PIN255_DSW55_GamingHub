@@ -18,6 +18,7 @@ public class Usuario {
     private String apelido;
     private String senha;
     private String steamId;
+    private int rank;
     @OneToMany(mappedBy = "usuario")
     private List<Acesso> acessos;
 
@@ -86,6 +87,14 @@ public class Usuario {
 
     public void setSteamId(String steamId) {
         this.steamId = steamId;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     public void conectarSteam() {

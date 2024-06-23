@@ -30,7 +30,7 @@ const fetchAchievements = async (id) => {
     return data.map(conquista => ({
       icon: conquista.imagem,
       nome: conquista.nomeConquista,
-      conc: conquista.conquistaConcluida > 0 ? 'Concluida' : 'Incompleta'
+      conc: conquista.conquistaConcluida > 0 ? 'Desbloqueada' : 'Bloqueada'
     }));
   } catch (error) {
     console.error("Erro ao buscar as conquistas:", error);

@@ -9,7 +9,8 @@ export const AuthProvider = ({ children }) => {
     nomeUsuario: '',
     senha: '',
     steamId:'',
-    avatar: ''
+    avatar: '',
+    rank: '1'
   });
 
   return (

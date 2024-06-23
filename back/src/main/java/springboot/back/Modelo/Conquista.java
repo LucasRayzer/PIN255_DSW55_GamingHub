@@ -24,8 +24,6 @@ public class Conquista {
     @JoinColumn(name = "jogo_id")
     private Jogo jogo;
 
-    // getters e setters
-
     public Integer getConquistaId() {
         return conquistaId;
     }

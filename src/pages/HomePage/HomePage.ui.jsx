@@ -1,24 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { HomeBodyContainer, HomePageContainer, TablesContainer, TableRow, TableWrapper, TableTitle, ListItem, ItemImage, ItemText, ItemNumber } from './HomePage.styles';
-import {NavHeader} from '../../components/HeaderMenu/HeaderMenu.ui';
+import { NavHeader } from '../../components/HeaderMenu/HeaderMenu.ui';
 import axios from 'axios';
+import AuthContext from '../../AuthContext';
 
- // Função mock para buscar dados do banco de dados
-const fetchData = async () => {
-   // Substitua esta função pela lógica real de busca dos dados do banco
-   return {
-     list4: [
-       { id: 1, text: "Item 4.1", image: "https://via.placeholder.com/40" },
-       { id: 2, text: "Item 4.2", image: "https://via.placeholder.com/40" },
-       { id: 3, text: "Item 4.3", image: "https://via.placeholder.com/40" },
-       { id: 4, text: "Item 1.4", image: "https://via.placeholder.com/40" },
-       { id: 5, text: "Item 1.5", image: "https://via.placeholder.com/40" }
-     ]
-   };
- };
- const fetchLibraryData = async () => {
+
+const fetchLibraryData = async (steamId) => {
   try {
-    const response = await axios.get(`http://localhost:8080/user/steamId/76561198973296498/jogos`);
+    const response = await axios.get(`http://localhost:8080/user/steamId/${steamId}/jogos`);
     return response.data;
   } catch (error) {
     console.error('Erro ao buscar dados da API', error);
@@ -36,11 +25,10 @@ const fetchPlayerCount = async (appId) => {
   }
 };
 
-const fetchGamesByPlaytime = async () => {
+const fetchGamesByPlaytime = async (steamId) => {
   try {
-    const response = await axios.get(`http://localhost:8080/user/steamId/76561198973296498/jogos`);
+    const response = await axios.get(`http://localhost:8080/user/steamId/${steamId}/jogos`); 
     const games = response.data;
-    // Ordena os jogos pelo tempoDeJogo em ordem decrescente
     const sortedGamesByPlaytime = games.sort((a, b) => b.tempoDeJogo - a.tempoDeJogo);
     return sortedGamesByPlaytime.map(game => ({
       ...game,
@@ -52,46 +40,58 @@ const fetchGamesByPlaytime = async () => {
   }
 };
 
+const fetchTopUsersByRank = async () => {
+  try {
+    const response = await axios.get('http://localhost:8080/user/all');
+    const users = response.data;
+    const sortedUsersByRank = users.sort((a, b) => b.rank - a.rank);
+    return sortedUsersByRank.slice(0, 5);
+  } catch (error) {
+    console.error('Erro ao buscar dados da API de usuários', error);
+    return [];
+  }
+};
+
 export default function HomePage() {
   const [topGames, setTopGames] = useState([]);
-  const [data, setData] = useState({ list4: [] });
   const [topGamesByAchievements, setTopGamesByAchievements] = useState([]);
   const [topGamesByPlaytime, setTopGamesByPlaytime] = useState([]);
+  const [topUsers, setTopUsers] = useState([]);
+  const { authData, setAuthData } = useContext(AuthContext);
 
-    useEffect(() => {
-      const getData = async () => {
-        const result = await fetchData();
-        setData(result);
-        const games = await fetchLibraryData();
-        const gamesWithPlayerCount = await Promise.all(games.map(async (game) => {
-          const player_count = await fetchPlayerCount(game.appId);
-          return {
-            ...game,
-            player_count
-          };
-        }));
-        const sortedGames = gamesWithPlayerCount.sort((a, b) => b.player_count - a.player_count);
-        setTopGames(sortedGames.slice(0, 5));
+  useEffect(() => {
+    const getData = async () => {
+      const games = await fetchLibraryData(authData.steamId);
+      const gamesWithPlayerCount = await Promise.all(games.map(async (game) => {
+        const player_count = await fetchPlayerCount(game.appId);
+        return {
+          ...game,
+          player_count
+        };
+      }));
+      const sortedGames = gamesWithPlayerCount.sort((a, b) => b.player_count - a.player_count);
+      setTopGames(sortedGames.slice(0, 5));
 
-        const sortedGamesByAchievements = games.sort((a, b) => b.f_conquistas - a.f_conquistas);
-        setTopGamesByAchievements(sortedGamesByAchievements.slice(0, 5));
+      const sortedGamesByAchievements = games.sort((a, b) => b.f_conquistas - a.f_conquistas);
+      setTopGamesByAchievements(sortedGamesByAchievements.slice(0, 5));
 
-        const sortedGamesByPlaytime = await fetchGamesByPlaytime();
-        setTopGamesByPlaytime(sortedGamesByPlaytime);
-      };
-  
-      getData();
-    }, []);
-    
- 
-   return (
-     <HomePageContainer>
-       <NavHeader />
-       <HomeBodyContainer>
-        
-         <TablesContainer>
-           <TableRow>
-           <TableWrapper>
+      const sortedGamesByPlaytime = await fetchGamesByPlaytime(authData.steamId);
+      setTopGamesByPlaytime(sortedGamesByPlaytime);
+
+      const topUsersByRank = await fetchTopUsersByRank();
+      setTopUsers(topUsersByRank);
+    };
+
+    getData();
+  }, []);
+
+  return (
+    <HomePageContainer>
+      <NavHeader />
+      <HomeBodyContainer>
+        <TablesContainer>
+          <TableRow>
+            <TableWrapper>
               <TableTitle>Jogos Mais Jogados</TableTitle>
               {topGames.map((game, index) => (
                 <ListItem key={index}>
@@ -111,9 +111,9 @@ export default function HomePage() {
                 </ListItem>
               ))}
             </TableWrapper>
-           </TableRow>
-           <TableRow>
-           <TableWrapper>
+          </TableRow>
+          <TableRow>
+            <TableWrapper>
               <TableTitle>Top 5 por Tempo de Jogo</TableTitle>
               {topGamesByPlaytime.map((game, index) => (
                 <ListItem key={index}>
@@ -123,19 +123,19 @@ export default function HomePage() {
                 </ListItem>
               ))}
             </TableWrapper>
-             <TableWrapper>
-               <TableTitle>Tabela 4</TableTitle>
-               {data.list4.map((item, index) => (
-                 <ListItem key={index}>
-                   <ItemImage src={item.image} alt={`Item ${index + 1}`} />
-                   <ItemText>{item.text}</ItemText>
-                   <ItemNumber>{item.id}</ItemNumber>
-                 </ListItem>
-               ))}
-             </TableWrapper>
-           </TableRow>
-         </TablesContainer>
-       </HomeBodyContainer>
-     </HomePageContainer>
-   );
- }
+            <TableWrapper>
+              <TableTitle>Top 5 Usuários por Ranking</TableTitle>
+              {topUsers.map((user, index) => (
+                <ListItem key={index}>
+                  <ItemImage src="https://via.placeholder.com/40" alt={`Item ${index + 1}`} />
+                  <ItemText>{user.nomeUsuario}</ItemText>
+                  <ItemNumber>{user.rank}</ItemNumber>
+                </ListItem>
+              ))}
+            </TableWrapper>
+          </TableRow>
+        </TablesContainer>
+      </HomeBodyContainer>
+    </HomePageContainer>
+  );
+}

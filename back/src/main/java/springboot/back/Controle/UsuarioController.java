@@ -33,7 +33,14 @@ public class UsuarioController {
 
     @GetMapping("/all")
     public List<Usuario> getAllUsuarios(){
-        return usuarioRepository.findAll();
+        List<Usuario> temp = new ArrayList<>();
+        usuarioRepository.findAll().forEach(usuario -> {
+            usuario.setAcessos(null);
+            usuario.setUsuarioJogos(null);
+            temp.add(usuario);
+        });
+
+        return temp;
     }
     @GetMapping("/{id}")
     public Usuario findusuarioById(@PathVariable int id)throws Exception{
@@ -178,6 +185,13 @@ public class UsuarioController {
                     rank.getAndIncrement();
             }
         });
+        return rank;
+    }
+    @GetMapping("/{id}/setRanking/{rank}")
+    public int setRanking(@PathVariable int id, @PathVariable int rank){
+        Usuario user = usuarioRepository.findById(id).get();
+        user.setRank(rank);
+        usuarioRepository.save(user);
         return rank;
     }
 //    @DeleteMapping("/{id}")

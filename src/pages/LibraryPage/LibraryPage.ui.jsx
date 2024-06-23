@@ -28,7 +28,7 @@ import AuthContext from '../../AuthContext';
 
 const fetchLibraryData = async (steamId) => {
   try {
-    const response = await axios.get(`http://localhost:8080/user/steamId/76561198973296498/jogos`); //ta mockado pro meu perfil pq não quero ficar fazendo login o tempo todo na aplicacao
+    const response = await axios.get(`http://localhost:8080/user/steamId/${steamId}/jogos`); //ta mockado pro meu perfil pq não quero ficar fazendo login o tempo todo na aplicacao
     const games = response.data.map(game => ({
       id: game.jogoId,
       name: game.nome,
@@ -127,6 +127,8 @@ export default function LibraryPage() {
       setTrophies(trophyResult);
       const rankResult = await fetchRankData(authData.idU);
       setRank(rankResult);
+      const resp = await axios.get(`http://localhost:8080/user/${authData.idU}/setRanking/${rankResult.rank}`);
+      setAuthData({...authData, rank: resp.data})
     };
 
     getData();
