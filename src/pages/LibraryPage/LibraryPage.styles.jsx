@@ -159,3 +159,12 @@ export const SearchInput = styled.input.attrs({
   border: 1px solid #000000;
   color:white;
 `;
+export const SearchButton = styled.button.attrs({
+  className: 'save-modal-button',
+})`
+ background-color: #0000008b;
+ color: #ffffff;
+ border: none;
+ border-radius: 4px;
+ cursor: pointer;
+`;

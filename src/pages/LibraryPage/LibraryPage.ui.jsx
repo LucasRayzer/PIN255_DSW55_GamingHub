@@ -20,7 +20,8 @@ import {
   ConquestText,
   TrophyContainer,
   SearchContainer,
-  SearchInput
+  SearchInput,
+  SearchButton
 } from './LibraryPage.styles';
 import { NavHeader } from '../../components/HeaderMenu/HeaderMenu.ui';
 import AuthContext from '../../AuthContext';
@@ -135,10 +136,9 @@ export default function LibraryPage() {
     navigate(`/game/${id}`);
   };
 
-  const handleSearch = async (event) => {
-    setSearchTerm(event.target.value);
-    if (event.target.value.trim() !== "") {
-      const result = await searchGame(event.target.value.trim());
+  const handleSearch = async () => {
+    if (searchTerm.trim() !== "") {
+      const result = await searchGame(searchTerm.trim());
       console.log(result)
       if(result!=null)
         navigate(`/game/${result}`);
@@ -154,8 +154,9 @@ export default function LibraryPage() {
             type="text"
             placeholder="Buscar jogo..."
             value={searchTerm}
-            onChange={handleSearch}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
+           <SearchButton onClick={handleSearch}>Buscar</SearchButton>
         </SearchContainer>
         <ColumnsContainer>
           <LeftColumn>

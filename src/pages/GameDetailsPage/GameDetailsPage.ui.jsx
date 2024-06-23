@@ -116,7 +116,6 @@ export default function GameDetailsPage() {
                 <ActionsContainer>
                   <ActionButton onClick={handleAddFav}>Adicionar aos Favoritos</ActionButton>
                   <ActionButton onClick={handleRateClick}>Atribuir Nota</ActionButton>
-                  <ActionButton onClick={handleGetReward}>Resgatar Recompensa</ActionButton>
                 </ActionsContainer>
               </GameInfoDown>
             </Section>
