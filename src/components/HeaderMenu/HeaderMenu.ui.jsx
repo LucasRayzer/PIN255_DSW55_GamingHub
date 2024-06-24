@@ -5,6 +5,7 @@ import LibLogo from '../../assets/images/LibLogo.png';
 import SteamLogo from '../../assets/images/SteamLogo.png';
 import ConfigLogo from '../../assets/images/ConfigLogo.png';
 import LogOut from '../../assets/images/LogOut.png';
+import defaultAvatar from '../../assets/images/Avatar/LogoGH.png';
 import AuthContext from "../../AuthContext";
 import axios from 'axios';
 
@@ -27,6 +28,7 @@ export function NavHeader({ avatar }) {
   const navigate = useNavigate();
   const { authData } = useContext(AuthContext);
   const [ranking, setRanking] = useState(0);
+  const [userAvatar, setUserAvatar] = useState(defaultAvatar); // Define o avatar padrão
 
   useEffect(() => {
     const getRankData = async () => {
@@ -35,13 +37,23 @@ export function NavHeader({ avatar }) {
     };
     
     getRankData();
+
+  
   }, [authData.idU]);
+  useEffect(() => {
+    // Atualiza o avatar se o usuário tiver um avatar definido
+    if (authData.avatar) {
+      setUserAvatar(authData.avatar);
+    } else {
+      setUserAvatar(defaultAvatar);
+    }
+  }, [authData.avatar]);
 
   return (
     <HomeHeader>
       <HeaderContainer>
         <LogoImage onClick={() => navigate('/homepage')}
-          src={authData.avatar} alt='Logo' />
+          src={userAvatar} alt='Logo' />
         <ApelidoTitle>{authData.apelido}</ApelidoTitle>
       </HeaderContainer>
       <RankingBox>

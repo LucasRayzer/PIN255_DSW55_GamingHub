@@ -14,6 +14,7 @@ import {
   RegisterTitle
 } from './RegisterPage.styles';
 
+
 export default function RegisterPage() {
   const navigate = useNavigate();
   const [apelido, setApelido] = useState('');
