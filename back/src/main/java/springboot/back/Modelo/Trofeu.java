@@ -19,7 +19,7 @@ public class Trofeu {
 
     private Boolean trofeuPrata;
     private int appId;
-
+    private String steamId;
 
     public Integer getId() {
         return id;
@@ -59,6 +59,14 @@ public class Trofeu {
 
     public void setAppId(int appId) {
         this.appId = appId;
+    }
+
+    public String getSteamId() {
+        return steamId;
+    }
+
+    public void setSteamId(String steamId) {
+        this.steamId = steamId;
     }
 
     public void reinvidicarTrofeu() {

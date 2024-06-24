@@ -63,11 +63,10 @@ const fetchLibraryData = async (steamId) => {
   }
 };
 
-const fetchTrophyData = async () => {
+const fetchTrophyData = async (steamId) => {
   try {
-    const response = await axios.get('http://localhost:8080/trofeu/all');
+    const response = await axios.get(`http://localhost:8080/trofeu/get/${steamId}`);
     const trophies = response.data;
-
     const goldTrophies = trophies.filter(trophy => trophy.trofeuOuro).length;
     const silverTrophies = trophies.filter(trophy => trophy.trofeuPrata).length;
 
@@ -99,9 +98,9 @@ const fetchRankData = async (id) => {
   }
 };
 
-const searchGame = async (searchTerm) => {
+const searchGame = async (searchTerm, steamId) => {
   try {
-    const response = await axios.get(`http://localhost:8080/jogo/nome/${searchTerm}`);
+    const response = await axios.get(`http://localhost:8080/jogo/nome/${searchTerm}/${steamId}`);
     return response.data.jogoId;
   } catch (error) {
     console.error('Erro ao buscar jogo', error);
@@ -123,7 +122,7 @@ export default function LibraryPage() {
       const steamId = authData.steamId;
       const result = await fetchLibraryData(steamId);
       setData(result);
-      const trophyResult = await fetchTrophyData();
+      const trophyResult = await fetchTrophyData(steamId);
       setTrophies(trophyResult);
       const rankResult = await fetchRankData(authData.idU);
       setRank(rankResult);
@@ -140,7 +139,7 @@ export default function LibraryPage() {
 
   const handleSearch = async () => {
     if (searchTerm.trim() !== "") {
-      const result = await searchGame(searchTerm.trim());
+      const result = await searchGame(searchTerm.trim(), authData.steamId);
       console.log(result)
       if(result!=null)
         navigate(`/game/${result}`);

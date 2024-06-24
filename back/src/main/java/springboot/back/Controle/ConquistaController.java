@@ -65,14 +65,14 @@ public class ConquistaController {
         });
         return temp;
     }
-    @GetMapping("/jogoNome/{nome}")
-    public List<Conquista> getConquistaByNomeJogo(@PathVariable String nome){
-        List<Conquista> temp= new ArrayList<>();
-        Jogo jogo = jogoRepository.findByNome(nome);
-        conquistaRepository.findByJogo(jogo).forEach(conquista -> {
-            conquista.setJogo(null);
-            temp.add(conquista);
-        });
-        return temp;
-    }
+//    @GetMapping("/jogoNome/{nome}")
+//    public List<Conquista> getConquistaByNomeJogo(@PathVariable String nome){
+//        List<Conquista> temp= new ArrayList<>();
+//        Jogo jogo = jogoRepository.findByNome(nome);
+//        conquistaRepository.findByJogo(jogo).forEach(conquista -> {
+//            conquista.setJogo(null);
+//            temp.add(conquista);
+//        });
+//        return temp;
+//    }
 }

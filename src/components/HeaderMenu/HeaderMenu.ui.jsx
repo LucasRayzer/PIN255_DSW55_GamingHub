@@ -6,21 +6,36 @@ import SteamLogo from '../../assets/images/SteamLogo.png';
 import ConfigLogo from '../../assets/images/ConfigLogo.png';
 import LogOut from '../../assets/images/LogOut.png';
 import AuthContext from "../../AuthContext";
+import axios from 'axios';
+
+const fetchRankData = async (id) => {
+  try {
+    const response = await axios.get(`http://localhost:8080/user/${id}/ranking`);
+    const rank = response.data;
+    return {
+      rank
+    };
+  } catch (error) {
+    console.error('Erro ao buscar dados dos troféus', error);
+    return {
+      rank: 0
+    };
+  }
+};
 
 export function NavHeader({ avatar }) {
   const navigate = useNavigate();
   const { authData } = useContext(AuthContext);
   const [ranking, setRanking] = useState(0);
 
-  // Função simulada para buscar dados do ranking
   useEffect(() => {
-    const interval = setInterval(() => {
-      // Simular chamada à API para obter dados do ranking
-      setRanking(prevRanking => (prevRanking + 1) % 100); // Exemplo de lógica de incremento
-    }, 60000); // Atualiza a cada 60 segundos
-
-    return () => clearInterval(interval);
-  }, []);
+    const getRankData = async () => {
+      const data = await fetchRankData(authData.idU);
+      setRanking(data.rank);
+    };
+    
+    getRankData();
+  }, [authData.idU]);
 
   return (
     <HomeHeader>
@@ -30,7 +45,7 @@ export function NavHeader({ avatar }) {
         <ApelidoTitle>{authData.apelido}</ApelidoTitle>
       </HeaderContainer>
       <RankingBox>
-        {` Ranking:  #${authData.rank}`}
+        {` Ranking:  #${ranking}`}
       </RankingBox>
       <ConfigBlock>
         <LibraryImage onClick={() => navigate('/library')}

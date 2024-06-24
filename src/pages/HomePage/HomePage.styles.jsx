@@ -78,7 +78,14 @@ export const ItemImage = styled.img.attrs({
   border-radius: 10%;
   margin-right: 10px;
 `;
-
+export const ItemImage2 = styled.img.attrs({
+  className: "table-image"
+})`
+  width: 92px;
+  height: 92px;
+  border-radius: 10%;
+  margin-right: 10px;
+`;
 export const ItemText = styled.div.attrs({
   className: "item-text"
 })`

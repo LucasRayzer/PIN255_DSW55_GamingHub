@@ -1,9 +1,13 @@
 package springboot.back.Modelo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +23,7 @@ public class Usuario {
     private String senha;
     private String steamId;
     private int rank;
+    private String imagem;
     @OneToMany(mappedBy = "usuario")
     private List<Acesso> acessos;
 
@@ -97,6 +102,35 @@ public class Usuario {
         this.rank = rank;
     }
 
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+    public Usuario atualizarImagem() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            URL url = new URL("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key=9D94F49413553413A449F22760F36A56&steamids=" + steamId);
+            JsonNode rootNode = mapper.readTree(url);
+
+            // Acessa o valor de players na resposta JSON
+            JsonNode playersNode = rootNode.path("response").path("players");
+            if (playersNode.isArray() && playersNode.size() > 0) {
+                JsonNode playerNode = playersNode.get(0);
+                String avatarFull = playerNode.path("avatarfull").asText();
+                this.setImagem(avatarFull);
+                return this;
+            } else {
+                System.out.println("Resposta da API incompleta ou inválida.");
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public void conectarSteam() {
         // UsuarioController
     }

@@ -105,17 +105,30 @@ public class JogoController {
         else
             throw new Exception("Não foi possível encontrar o jogo");
     }
-    @GetMapping("/nome/{nome}")
-    public Jogo listarJogoByNome(@PathVariable String nome)throws Exception{
-        Jogo temp = jogoRepository.findByNome(nome);
-        if(temp!=null) {
-            temp.setUsuarioJogos(null);
-            temp.setConquistasJogo(null);
-            temp.setTrofeu(null);
-            return temp;
+    @GetMapping("/nome/{nome}/{steamId}")
+    public Jogo listarJogoByNome(@PathVariable String nome, @PathVariable String steamId)throws Exception{
+        List<Jogo> jogos= jogoRepository.findBySteamId(steamId);
+        Jogo temp = new Jogo();
+        for(Jogo jogo : jogos){
+            if(jogo.getNome().equals(nome)) {
+                temp = jogo;
+                break;
+            }
         }
-        else
-            throw new Exception("Não foi possível encontrar o jogo");
+        temp.setUsuarioJogos(null);
+        temp.setConquistasJogo(null);
+        temp.setTrofeu(null);
+        return temp;
+    }
+    @GetMapping("/nome/{nome}")
+    public List<Jogo> listarJogosByNome(@PathVariable String nome)throws Exception{
+        List<Jogo> jogos= jogoRepository.findByNome(nome);
+        for(Jogo jogo : jogos){
+            jogo.setUsuarioJogos(null);
+            jogo.setConquistasJogo(null);
+            jogo.setTrofeu(null);
+        }
+        return jogos;
     }
     @GetMapping("/{id}/notaJogo/{nota}")
     public int setNotaJogo(@PathVariable int id, @PathVariable int nota){
@@ -124,9 +137,9 @@ public class JogoController {
         jogoRepository.save(jogo);
         return jogo.getNotaJogo();
     }
-    @GetMapping("/{nome}/jogoFavorito")
-    public boolean setJogoFavorito(@PathVariable String nome) {
-        Jogo jogo = jogoRepository.findByNome(nome);
+    @GetMapping("/{id}/jogoFavorito")
+    public boolean setJogoFavorito(@PathVariable int id) {
+        Jogo jogo = jogoRepository.findById(id).get();
         if (jogo.getJogoFavorito())
             jogo.setJogoFavorito(false);
         else
@@ -134,10 +147,17 @@ public class JogoController {
         jogoRepository.save(jogo);
         return jogo.getJogoFavorito();
     }
-    @GetMapping("/jogadoresAtual/{appId}")
-    public int getJogadoresAtual(@PathVariable int appId){
-        Jogo jogo = jogoRepository.findByAppId(appId);
-        jogo.atualizarCurrentPlayers();
-        return jogo.getCurrentPlayers();
+    @GetMapping("/jogadoresAtual/{appId}/{steamId}")
+    public int getJogadoresAtual(@PathVariable int appId, @PathVariable String steamId){
+        List<Jogo> jogo = jogoRepository.findBySteamId(steamId);
+        Jogo temp=new Jogo();
+        for(Jogo jo : jogo){
+            if(jo.getAppId()==appId){
+                temp=jo;
+                break;
+            }
+        }
+        temp.atualizarCurrentPlayers();
+        return temp.getCurrentPlayers();
     }
 }

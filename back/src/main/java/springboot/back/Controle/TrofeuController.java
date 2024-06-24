@@ -34,6 +34,17 @@ public class TrofeuController {
         });
         return temp;
     }
+    @GetMapping("get/{steamId}")
+    public List<Trofeu> getTrofeusbySteamId(@PathVariable String steamId){
+        List<Trofeu> temp = new ArrayList<>();
+        trofeuRepository.findAll().forEach(trofeu -> {
+            if(trofeu.getSteamId().equals(steamId)){
+                trofeu.setJogo(null);
+                temp.add(trofeu);
+            }
+        });
+        return temp;
+    }
     @GetMapping("/{id}")
     public Trofeu getTrofeuById(@PathVariable int id) throws Exception{
         if(trofeuRepository.existsById(id)){
@@ -65,15 +76,15 @@ public class TrofeuController {
         else
             throw new Exception("Não foi possível localizar o troféu");
     }
-    @GetMapping("/jogoNome/{nome}")
-    public Trofeu getTrofeuByNomeJogo(@PathVariable String nome) throws Exception{
-        Jogo jogo = jogoRepository.findByNome(nome);
-        Trofeu trofeu= trofeuRepository.findByJogo(jogo);
-        if(trofeu!=null){
-            trofeu.setJogo(null);
-            return trofeu;
-        }
-        else
-            throw new Exception("Não foi possível localizar o troféu");
-    }
+//    @GetMapping("/jogoNome/{nome}")
+//    public Trofeu getTrofeuByNomeJogo(@PathVariable String nome) throws Exception{
+//        Jogo jogo = jogoRepository.findByNome(nome);
+//        Trofeu trofeu= trofeuRepository.findByJogo(jogo);
+//        if(trofeu!=null){
+//            trofeu.setJogo(null);
+//            return trofeu;
+//        }
+//        else
+//            throw new Exception("Não foi possível localizar o troféu");
+//    }
 }

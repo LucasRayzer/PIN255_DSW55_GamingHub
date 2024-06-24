@@ -65,34 +65,37 @@ public class ApiController {
     public List<Conquista> getAllAchievements(){
         return conquistaRepository.findAll();
     }
-    @GetMapping("/set")
-    public void  setar(){
+    @GetMapping("/set/{steamId}")
+    public void  setar(@PathVariable String steamId){
         jogoRepository.findAll().forEach(jogo-> {
-            AtomicInteger count = new AtomicInteger();
-            conquistaRepository.findByAppId(jogo.getAppId()).forEach(conquista -> {
-                count.getAndIncrement();
-                jogo.addConquistasJogo(conquista);
-                conquista.setJogo(jogo);
-                conquistaRepository.save(conquista);
-            });
-            jogo.setN_conquistas(count.get());
-            jogo.conquistasFinalizadas(conquistaRepository.findAll());
-            Trofeu trofeu = new Trofeu();
-            trofeu.setTrofeuPrata(false);
-            trofeu.setTrofeuOuro(false);
-            trofeu.setAppId(jogo.getAppId());
-            if(jogo.getN_conquistas()!=0){
-                int temp= jogo.getN_conquistas()/2;
-                if(jogo.getF_conquistas()>=temp)
-                    trofeu.setTrofeuPrata(true);
-                if(jogo.getN_conquistas()==jogo.getF_conquistas()) {
-                    trofeu.setTrofeuOuro(true);
-                    trofeu.setTrofeuPrata(true);
+            if(jogo.getSteamId().equals(steamId)) {
+                AtomicInteger count = new AtomicInteger();
+                conquistaRepository.findByAppId(jogo.getAppId()).forEach(conquista -> {
+                    count.getAndIncrement();
+                    jogo.addConquistasJogo(conquista);
+                    conquista.setJogo(jogo);
+                    conquistaRepository.save(conquista);
+                });
+                jogo.setN_conquistas(count.get());
+                jogo.conquistasFinalizadas(conquistaRepository.findAll());
+                Trofeu trofeu = new Trofeu();
+                trofeu.setTrofeuPrata(false);
+                trofeu.setTrofeuOuro(false);
+                trofeu.setAppId(jogo.getAppId());
+                trofeu.setSteamId(steamId);
+                if (jogo.getN_conquistas() != 0) {
+                    int temp = jogo.getN_conquistas() / 2;
+                    if (jogo.getF_conquistas() >= temp)
+                        trofeu.setTrofeuPrata(true);
+                    if (jogo.getN_conquistas() == jogo.getF_conquistas()) {
+                        trofeu.setTrofeuOuro(true);
+                        trofeu.setTrofeuPrata(true);
+                    }
                 }
+                trofeu.setJogo(jogo);
+                trofeuRepository.save(trofeu);
+                jogoRepository.save(jogo);
             }
-            trofeu.setJogo(jogo);
-            trofeuRepository.save(trofeu);
-            jogoRepository.save(jogo);
         });
     }
     @GetMapping("/deleteEmpty")

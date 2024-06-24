@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { HomeBodyContainer, HomePageContainer, TablesContainer, TableRow, TableWrapper, TableTitle, ListItem, ItemImage, ItemText, ItemNumber } from './HomePage.styles';
+import { HomeBodyContainer, HomePageContainer, TablesContainer, TableRow, TableWrapper, TableTitle, ListItem, ItemImage, ItemText, ItemNumber, ItemImage2 } from './HomePage.styles';
 import { NavHeader } from '../../components/HeaderMenu/HeaderMenu.ui';
 import axios from 'axios';
 import AuthContext from '../../AuthContext';
@@ -15,9 +15,9 @@ const fetchLibraryData = async (steamId) => {
   }
 };
 
-const fetchPlayerCount = async (appId) => {
+const fetchPlayerCount = async (appId, steamId) => {
   try {
-    const response = await axios.get(`http://localhost:8080/jogo/jogadoresAtual/${appId}`);
+    const response = await axios.get(`http://localhost:8080/jogo/jogadoresAtual/${appId}/${steamId}`);
     return response.data;
   } catch (error) {
     console.error(`Erro ao buscar player count para o appId ${appId}`, error);
@@ -51,7 +51,6 @@ const fetchTopUsersByRank = async () => {
     return [];
   }
 };
-
 export default function HomePage() {
   const [topGames, setTopGames] = useState([]);
   const [topGamesByAchievements, setTopGamesByAchievements] = useState([]);
@@ -63,7 +62,7 @@ export default function HomePage() {
     const getData = async () => {
       const games = await fetchLibraryData(authData.steamId);
       const gamesWithPlayerCount = await Promise.all(games.map(async (game) => {
-        const player_count = await fetchPlayerCount(game.appId);
+        const player_count = await fetchPlayerCount(game.appId, authData.steamId);
         return {
           ...game,
           player_count
@@ -127,8 +126,8 @@ export default function HomePage() {
               <TableTitle>Top 5 Usuários por Ranking</TableTitle>
               {topUsers.map((user, index) => (
                 <ListItem key={index}>
-                  <ItemImage src="https://via.placeholder.com/40" alt={`Item ${index + 1}`} />
-                  <ItemText>{user.nomeUsuario}</ItemText>
+                  <ItemImage2 src={user.imagem} alt={`Item ${index + 1}`} />
+                  <ItemText>{user.apelido}</ItemText>
                   <ItemNumber>{user.rank}</ItemNumber>
                 </ListItem>
               ))}

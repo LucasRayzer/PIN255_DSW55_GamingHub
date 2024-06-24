@@ -18,7 +18,4 @@ public class JogoService {
     public Jogo findByAppId(int appId){
         return jogoRepository.findByAppId(appId);
     }
-    public Jogo findByNome(String nome){
-        return jogoRepository.findByNome(nome);
-    }
 }

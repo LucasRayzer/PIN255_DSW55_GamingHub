@@ -43,6 +43,7 @@ export default function GameDetailsPage() {
   const navigate = useNavigate();
   const [gameData, setGameData] = useState(null);
   const [achievements, setAchievements] = useState([]);
+  const [averageNote, setAverageNote] = useState(null);
 
   useEffect(() => {
     const fetchGameData = async () => {
@@ -56,6 +57,13 @@ export default function GameDetailsPage() {
           hoursPlayed: `${(data.tempoDeJogo/60).toFixed(2)} horas`, 
           completion: `${((data.f_conquistas / data.n_conquistas) * 100).toFixed(2)}%`,
         });
+        const responseAllGames = await fetch(`http://localhost:8080/jogo/nome/${data.nome}`);
+        const allGamesData = await responseAllGames.json();
+
+        // Calcular a média das notas
+        const notes = allGamesData.map(game => game.notaJogo).filter(note => note !== null);
+        const average = notes.length > 0 ? (notes.reduce((a, b) => a + b, 0) / notes.length) : 'N/A';
+        setAverageNote(average.toFixed(1));
       } catch (error) {
         console.error("Erro ao buscar os dados do jogo:", error);
       }
@@ -69,7 +77,6 @@ export default function GameDetailsPage() {
     fetchGameData();
     fetchAndSetAchievements();
   }, [id]);
-
   const handleRateClick = () => {
     navigate(`/rate/${id}`);
   };
@@ -77,7 +84,7 @@ export default function GameDetailsPage() {
 
   const handleAddFav = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/jogo/${gameData.name}/jogoFavorito`, {
+      const response = await fetch(`http://localhost:8080/jogo/${id}/jogoFavorito`, {
         method: 'GET',
       });
       if (response.ok) {
@@ -114,6 +121,7 @@ export default function GameDetailsPage() {
                   <SectionTitle>{gameData.name}</SectionTitle>
                   <InfoText>Conquistas: {gameData.completion}</InfoText>
                   <InfoText>Horas jogadas: {gameData.hoursPlayed}</InfoText>
+                  <InfoText>Nota: {averageNote}</InfoText>
                 </GameInfo>
               </GameInfoUp>
               <GameInfoDown>

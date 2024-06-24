@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface JogoRepository extends JpaRepository<Jogo, Integer> {
     Jogo findByAppId(int appId);
-    Jogo findByNome(String nome);
-    Jogo findBySteamId(String steamId);
+    List<Jogo> findByNome(String nome);
+    List<Jogo> findBySteamId(String steamId);
 }

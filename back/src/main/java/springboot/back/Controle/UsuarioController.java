@@ -194,6 +194,17 @@ public class UsuarioController {
         usuarioRepository.save(user);
         return rank;
     }
+    @GetMapping("{steamId}/imagemPerfil")
+    public void setImagem(@PathVariable String steamId){
+        Usuario user = usuarioRepository.findBySteamId(steamId);
+        Usuario temp = user.atualizarImagem();
+        usuarioRepository.save(temp);
+    }
+    @GetMapping("{steamId}/imagemPerfilF")
+    public String setImagemF(@PathVariable String steamId){
+        Usuario user = usuarioRepository.findBySteamId(steamId);
+        return user.getImagem();
+    }
 //    @DeleteMapping("/{id}")
 //    public Usuario deleteUser(@PathVariable int id){
 //        Usuario usuario = usuarioRepository.findById(id).get();
