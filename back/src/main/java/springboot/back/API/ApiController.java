@@ -61,10 +61,12 @@ public class ApiController {
             if(jogo.getSteamId().equals(steamId)) {
                 AtomicInteger count = new AtomicInteger();
                 conquistaRepository.findByAppId(jogo.getAppId()).forEach(conquista -> {
-                    count.getAndIncrement();
-                    jogo.addConquistasJogo(conquista);
-                    conquista.setJogo(jogo);
-                    conquistaRepository.save(conquista);
+                    if(conquista.getSteamId().equals(steamId)) {
+                        count.getAndIncrement();
+                        jogo.addConquistasJogo(conquista);
+                        conquista.setJogo(jogo);
+                        conquistaRepository.save(conquista);
+                    }
                 });
                 jogo.setN_conquistas(count.get());
                 jogo.conquistasFinalizadas(conquistaRepository.findAll());

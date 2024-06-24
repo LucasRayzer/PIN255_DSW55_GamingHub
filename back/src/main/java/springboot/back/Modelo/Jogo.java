@@ -133,7 +133,7 @@ public class Jogo {
 
     public void conquistasFinalizadas(List<Conquista> conquistas){
         conquistas.forEach(conquista ->{
-            if(conquista.getAppId()==getAppId()&&conquista.getConquistaConcluida()==1){
+            if(conquista.getAppId()==getAppId()&&conquista.getConquistaConcluida()==1&&conquista.getSteamId().equals(steamId)){
                 f_conquistas++;
             }
         });
