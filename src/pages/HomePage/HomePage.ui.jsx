@@ -126,6 +126,7 @@ export default function HomePage() {
               <TableTitle>Top 5 Usuários por Ranking</TableTitle>
               {topUsers.map((user, index) => (
                 <ListItem key={index}>
+                  <ItemNumber>#{index+1}</ItemNumber>
                   <ItemImage2 src={user.imagem} alt={`Item ${index + 1}`} />
                   <ItemText>{user.apelido}</ItemText>
                   <ItemNumber>{user.rank}</ItemNumber>

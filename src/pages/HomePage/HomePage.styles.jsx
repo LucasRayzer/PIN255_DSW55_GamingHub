@@ -85,6 +85,7 @@ export const ItemImage2 = styled.img.attrs({
   height: 92px;
   border-radius: 10%;
   margin-right: 10px;
+  margin-left: 10px;
 `;
 export const ItemText = styled.div.attrs({
   className: "item-text"

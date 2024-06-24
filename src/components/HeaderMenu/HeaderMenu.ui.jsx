@@ -9,45 +9,42 @@ import defaultAvatar from '../../assets/images/Avatar/LogoGH.png';
 import AuthContext from "../../AuthContext";
 import axios from 'axios';
 
-const fetchRankData = async (id) => {
+const fetchUsersData = async () => {
   try {
-    const response = await axios.get(`http://localhost:8080/user/${id}/ranking`);
-    const rank = response.data;
-    return {
-      rank
-    };
+    const response = await axios.get('http://localhost:8080/user/all');
+    return response.data;
   } catch (error) {
-    console.error('Erro ao buscar dados dos troféus', error);
-    return {
-      rank: 0
-    };
+    console.error('Erro ao buscar dados dos usuários', error);
+    return [];
   }
 };
 
-export function NavHeader({ avatar }) {
+export function NavHeader({avatar}) {
   const navigate = useNavigate();
   const { authData } = useContext(AuthContext);
   const [ranking, setRanking] = useState(0);
-  const [userAvatar, setUserAvatar] = useState(defaultAvatar); // Define o avatar padrão
+  const [userAvatar, setUserAvatar] = useState(defaultAvatar);
 
   useEffect(() => {
-    const getRankData = async () => {
-      const data = await fetchRankData(authData.idU);
-      setRanking(data.rank);
+    const getUsersData = async () => {
+      const users = await fetchUsersData();
+      const sortedUsers = users.sort((a, b) => b.rank - a.rank);
+      const userRank = sortedUsers.findIndex(user => user.usuarioId === authData.idU) + 1;
+      setRanking(userRank);
+      // const user = users.find(user => user.usuarioId === authData.idU);
+      // if (user && user.imagem) {
+      //   setUserAvatar(user.imagem);
+      // } else {
+      //   setUserAvatar(defaultAvatar);
+      // }
+      if (authData.avatar) {
+        setUserAvatar(authData.avatar);
+      } else {
+        setUserAvatar(defaultAvatar);
+      }
     };
-    
-    getRankData();
-
-  
-  }, [authData.idU]);
-  useEffect(() => {
-    // Atualiza o avatar se o usuário tiver um avatar definido
-    if (authData.avatar) {
-      setUserAvatar(authData.avatar);
-    } else {
-      setUserAvatar(defaultAvatar);
-    }
-  }, [authData.avatar]);
+    getUsersData();
+  }, [authData.idU], [authData.avatar]);
 
   return (
     <HomeHeader>
@@ -57,7 +54,7 @@ export function NavHeader({ avatar }) {
         <ApelidoTitle>{authData.apelido}</ApelidoTitle>
       </HeaderContainer>
       <RankingBox>
-        {` Ranking:  #${ranking}`}
+        {`Ranking:  #${ranking}`}
       </RankingBox>
       <ConfigBlock>
         <LibraryImage onClick={() => navigate('/library')}
