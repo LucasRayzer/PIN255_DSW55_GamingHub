@@ -1,6 +1,5 @@
 package springboot.back.Modelo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
 import java.io.IOException;
@@ -104,9 +103,11 @@ public class Jogo {
     public void setConquistasJogo(List<Conquista> conquistasJogo) {
         this.conquistasJogo = conquistasJogo;
     }
+
     public String getSteamId() {
         return steamId;
     }
+
     public void addConquistasJogo(Conquista conquista){
         conquistasJogo.add(conquista);
     }
@@ -129,7 +130,7 @@ public class Jogo {
     public void setF_conquistas(int f_conquistas) {
         this.f_conquistas = f_conquistas;
     }
-    //calcula as conquistas finalizadas do jogo
+
     public void conquistasFinalizadas(List<Conquista> conquistas){
         conquistas.forEach(conquista ->{
             if(conquista.getAppId()==getAppId()&&conquista.getConquistaConcluida()==1){

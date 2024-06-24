@@ -205,13 +205,4 @@ public class UsuarioController {
         Usuario user = usuarioRepository.findBySteamId(steamId);
         return user.getImagem();
     }
-//    @DeleteMapping("/{id}")
-//    public Usuario deleteUser(@PathVariable int id){
-//        Usuario usuario = usuarioRepository.findById(id).get();
-//        int acessoId = acessoRepository.findByUsuario(usuario).getId();
-//        acessoRepository.deleteById(acessoId);
-//        usuarioRepository.deleteById(id);
-//        return usuario;
-//    }
-
 }

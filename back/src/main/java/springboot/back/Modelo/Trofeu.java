@@ -1,9 +1,7 @@
 package springboot.back.Modelo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.List;
 
 @Entity
 public class Trofeu {
@@ -70,7 +68,7 @@ public class Trofeu {
     }
 
     public void reinvidicarTrofeu() {
-
+        //usuario controller
     }
 }
 

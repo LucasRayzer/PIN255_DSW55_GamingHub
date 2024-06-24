@@ -28,7 +28,7 @@ export default function RegisterPage() {
         senha: senha
       });
       if (response.status === 201) {
-        navigate('/login'); // Supondo que '/homepage' seja a rota após registro
+        navigate('/login'); 
       }
     } catch (error) {
       console.error("Erro na criação de Usuário!", error);

@@ -1,22 +1,14 @@
 package springboot.back.Controle;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import springboot.back.Modelo.Conquista;
 import springboot.back.Modelo.Jogo;
 import springboot.back.Modelo.Trofeu;
-import springboot.back.Modelo.Usuario;
-import springboot.back.Repositorio.ConquistaRepository;
 import springboot.back.Repositorio.JogoRepository;
-import springboot.back.Repositorio.UsuarioRepository;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/jogo")

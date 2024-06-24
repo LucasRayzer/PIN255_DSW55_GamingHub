@@ -1,17 +1,12 @@
 package springboot.back.Controle;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import springboot.back.Modelo.Acesso;
 import springboot.back.Modelo.Usuario;
 import springboot.back.Repositorio.AcessoRepository;
 import springboot.back.Repositorio.UsuarioRepository;
 
-import java.net.URI;
-import java.sql.Time;
 import java.util.List;
 
 @RestController

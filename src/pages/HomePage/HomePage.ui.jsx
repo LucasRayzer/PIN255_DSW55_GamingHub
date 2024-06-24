@@ -32,8 +32,8 @@ const fetchGamesByPlaytime = async (steamId) => {
     const sortedGamesByPlaytime = games.sort((a, b) => b.tempoDeJogo - a.tempoDeJogo);
     return sortedGamesByPlaytime.map(game => ({
       ...game,
-      tempoDeJogoHours: game.tempoDeJogo / 60  // converte tempoDeJogo de minutos para horas
-    })).slice(0, 5);  // pega os top 5 jogos
+      tempoDeJogoHours: game.tempoDeJogo / 60 
+    })).slice(0, 5);  
   } catch (error) {
     console.error('Erro ao buscar dados da API para tempo de jogo', error);
     return [];

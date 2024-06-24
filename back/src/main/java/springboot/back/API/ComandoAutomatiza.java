@@ -3,7 +3,6 @@ package springboot.back.API;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import springboot.back.Modelo.Jogo;
 import springboot.back.Repositorio.ConquistaRepository;
 import springboot.back.Repositorio.JogoRepository;
 

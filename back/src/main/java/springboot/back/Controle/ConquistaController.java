@@ -1,30 +1,20 @@
 package springboot.back.Controle;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import springboot.back.Modelo.Conquista;
 import springboot.back.Modelo.Jogo;
-import springboot.back.Modelo.Trofeu;
 import springboot.back.Repositorio.ConquistaRepository;
 import springboot.back.Repositorio.JogoRepository;
-import springboot.back.Repositorio.TrofeuRepository;
-import springboot.back.Service.ConquistaService;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/conquista")
 public class ConquistaController {
     @Autowired
     private ConquistaRepository conquistaRepository;
-    @Autowired
-    private ConquistaService conquistaService;
     @Autowired
     private JogoRepository jogoRepository;
     @GetMapping("/all")
@@ -65,14 +55,4 @@ public class ConquistaController {
         });
         return temp;
     }
-//    @GetMapping("/jogoNome/{nome}")
-//    public List<Conquista> getConquistaByNomeJogo(@PathVariable String nome){
-//        List<Conquista> temp= new ArrayList<>();
-//        Jogo jogo = jogoRepository.findByNome(nome);
-//        conquistaRepository.findByJogo(jogo).forEach(conquista -> {
-//            conquista.setJogo(null);
-//            temp.add(conquista);
-//        });
-//        return temp;
-//    }
 }

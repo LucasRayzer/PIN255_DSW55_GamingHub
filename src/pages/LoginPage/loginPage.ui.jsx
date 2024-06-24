@@ -32,7 +32,6 @@ export default function LoginPage() {
         senha: response.data.senha, 
         steamId: response.data.steamId
       });
-      console.log(response.data.senha)
       setCon(response.data.senha);
       return response.data.senha;
     } catch (error) {

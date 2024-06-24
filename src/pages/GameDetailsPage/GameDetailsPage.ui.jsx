@@ -72,7 +72,6 @@ export default function GameDetailsPage() {
     const fetchAndSetAchievements = async () => {
       const achievementsData = await fetchAchievements(id);
       setAchievements(achievementsData);
-      console.log(achievementsData)
     };
     fetchGameData();
     fetchAndSetAchievements();

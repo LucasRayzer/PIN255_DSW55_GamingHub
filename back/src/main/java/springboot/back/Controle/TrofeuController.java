@@ -1,19 +1,12 @@
 package springboot.back.Controle;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import springboot.back.Modelo.Conquista;
 import springboot.back.Modelo.Jogo;
 import springboot.back.Modelo.Trofeu;
-import springboot.back.Repositorio.ConquistaRepository;
 import springboot.back.Repositorio.JogoRepository;
 import springboot.back.Repositorio.TrofeuRepository;
-import springboot.back.Service.TrofeuService;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +15,6 @@ import java.util.List;
 public class TrofeuController {
     @Autowired
     private TrofeuRepository trofeuRepository;
-    @Autowired
-    private TrofeuService trofeuService;
     @Autowired JogoRepository jogoRepository;
     @GetMapping("/all")
     public List<Trofeu> getAllTrofeus(){
@@ -76,15 +67,4 @@ public class TrofeuController {
         else
             throw new Exception("Não foi possível localizar o troféu");
     }
-//    @GetMapping("/jogoNome/{nome}")
-//    public Trofeu getTrofeuByNomeJogo(@PathVariable String nome) throws Exception{
-//        Jogo jogo = jogoRepository.findByNome(nome);
-//        Trofeu trofeu= trofeuRepository.findByJogo(jogo);
-//        if(trofeu!=null){
-//            trofeu.setJogo(null);
-//            return trofeu;
-//        }
-//        else
-//            throw new Exception("Não foi possível localizar o troféu");
-//    }
 }

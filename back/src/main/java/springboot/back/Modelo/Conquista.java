@@ -1,11 +1,8 @@
 package springboot.back.Modelo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
-import java.util.List;
 
 @Entity
 public class Conquista {

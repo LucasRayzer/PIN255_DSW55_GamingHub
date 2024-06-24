@@ -30,20 +30,10 @@ public class ApiController {
     private TrofeuRepository trofeuRepository;
 
     // 76561198973296498
-    // 1091500
-    // 1262350
+    // 76561198332097264
     /*DROP SCHEMA public CASCADE;
     CREATE SCHEMA public;*/
-    //http://localhost:8080/api/playerGames/76561198973296498
-    //http://localhost:8080/api/games
-    //http://localhost:8080/api/playerAchievements/76561198973296498/1091500
-    //http://localhost:8080/api/achievements
-    //http://localhost:8080/jogo/associar
-    //http://localhost:8080/jogo/38
-    //http://localhost:8080/jogo/38/conquistas
-    //http://localhost:8080/api/playerAchievements/76561198973296498/1262350
-    //http://localhost:8080/jogo/45/conquistas
-    //http://localhost:8080/user/associar
+    //http://localhost:8080/api/executeCommands2/{steamId}
 
     @GetMapping("/steamplayer/{steamId}")
     public Mono<ApiResponse> getSteamPlayerProfile(@PathVariable String steamId) {

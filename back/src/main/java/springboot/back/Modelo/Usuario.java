@@ -1,10 +1,8 @@
 package springboot.back.Modelo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
 
 import java.io.IOException;
 import java.net.URL;

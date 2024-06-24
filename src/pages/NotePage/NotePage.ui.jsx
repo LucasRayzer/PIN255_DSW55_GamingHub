@@ -28,7 +28,6 @@ export default function NotePage() {
   const [averageNote, setAverageNote] = useState(null);
 
   useEffect(() => {
-    // Função para buscar dados do jogo
     const fetchGameData = async () => {
       try {
         const response = await fetch(`http://localhost:8080/jogo/${id}`);
@@ -36,7 +35,6 @@ export default function NotePage() {
         setGameData(data);
         setSelectedNote(data.notaJogo || 0);
 
-        // Função para buscar dados de todos os jogos com o mesmo nome
         const responseAllGames = await fetch(`http://localhost:8080/jogo/nome/${data.nome}`);
         const allGamesData = await responseAllGames.json();
 
@@ -61,7 +59,7 @@ export default function NotePage() {
       const response = await fetch(`http://localhost:8080/jogo/${id}/notaJogo/${selectedNote}`);
       if (response.ok) {
         alert(`Nota ${selectedNote} salva com sucesso!`);
-        navigate(-1); // Volta para a página anterior
+        navigate(-1); 
       } else {
         console.error("Erro ao salvar a nota:", response.statusText);
       }
