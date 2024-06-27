@@ -179,10 +179,11 @@ public class UsuarioController {
             if(usuarioJogo.getUsuario().getUsuarioId()==id){
                 Jogo jogo = jogoRepository.findById(usuarioJogo.getJogo().getJogoId()).get();
                 Trofeu trofeu = jogo.getTrofeu();
+                if(trofeu!=null){
                 if(trofeu.getTrofeuOuro())
                     rank.addAndGet(2);
                 if(trofeu.getTrofeuPrata())
-                    rank.getAndIncrement();
+                    rank.getAndIncrement();}
             }
         });
         return rank;

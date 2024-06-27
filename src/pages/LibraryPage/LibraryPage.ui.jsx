@@ -51,8 +51,7 @@ const fetchLibraryData = async (steamId) => {
       games: games,
       totalAchievements: totalAchievements,
       acquiredAchievements: acquiredAchievements,
-      favorites: favorites,
-      rank: 21, // Tá mockado
+      favorites: favorites
     };
   } catch (error) {
     console.error('Erro ao buscar dados da API', error);

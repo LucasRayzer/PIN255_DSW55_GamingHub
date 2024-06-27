@@ -58,18 +58,39 @@ public class ApiController {
     @GetMapping("/set/{steamId}")
     public void  setar(@PathVariable String steamId){
         jogoRepository.findAll().forEach(jogo-> {
-            if(jogo.getSteamId().equals(steamId)) {
-                AtomicInteger count = new AtomicInteger();
-                conquistaRepository.findByAppId(jogo.getAppId()).forEach(conquista -> {
-                    if(conquista.getSteamId().equals(steamId)) {
-                        count.getAndIncrement();
-                        jogo.addConquistasJogo(conquista);
-                        conquista.setJogo(jogo);
-                        conquistaRepository.save(conquista);
-                    }
-                });
-                jogo.setN_conquistas(count.get());
-                jogo.conquistasFinalizadas(conquistaRepository.findAll());
+            if(jogo.getN_conquistas()==0){
+                if(jogo.getSteamId().equals(steamId)) {
+                    AtomicInteger count = new AtomicInteger();
+                    conquistaRepository.findByAppId(jogo.getAppId()).forEach(conquista -> {
+                        if(conquista.getSteamId().equals(steamId)) {
+                            count.getAndIncrement();
+                            jogo.addConquistasJogo(conquista);
+                            conquista.setJogo(jogo);
+                            conquistaRepository.save(conquista);
+                        }
+                    });
+                    jogo.setN_conquistas(count.get());
+                    jogo.conquistasFinalizadas(conquistaRepository.findAll());
+                    jogoRepository.save(jogo);
+                }
+            }
+        });
+    }
+    @GetMapping("/deleteEmpty")
+    public void deleteEmpty(){
+        List<Integer> ids = new ArrayList<>();
+        jogoRepository.findAll().forEach(jogo -> {
+            if (jogo.getNome() == null || jogo.getNome().isEmpty()) {
+                ids.add(jogo.getJogoId());
+            }
+        });
+        jogoRepository.deleteAllById(ids);
+    }
+    @GetMapping("/setTrofeus/{steamId}")
+    public void setTrofeus(@PathVariable String steamId){
+        List<Jogo> jogos = jogoRepository.findBySteamId(steamId);
+        for (Jogo jogo : jogos){
+            if(trofeuRepository.findByJogo(jogo)==null){
                 Trofeu trofeu = new Trofeu();
                 trofeu.setTrofeuPrata(false);
                 trofeu.setTrofeuOuro(false);
@@ -83,21 +104,11 @@ public class ApiController {
                         trofeu.setTrofeuOuro(true);
                         trofeu.setTrofeuPrata(true);
                     }
+                    trofeu.setJogo(jogo);
+                    trofeuRepository.save(trofeu);
+
                 }
-                trofeu.setJogo(jogo);
-                trofeuRepository.save(trofeu);
-                jogoRepository.save(jogo);
             }
-        });
-    }
-    @GetMapping("/deleteEmpty")
-    public void deleteEmpty(){
-        List<Integer> ids = new ArrayList<>();
-        jogoRepository.findAll().forEach(jogo -> {
-            if (jogo.getNome() == null || jogo.getNome().isEmpty()) {
-                ids.add(jogo.getJogoId());
-            }
-        });
-        jogoRepository.deleteAllById(ids);
+        }
     }
 }
