@@ -46,7 +46,8 @@ export default function LoginPage() {
     if (senha === confirmedSenha) {
       navigate('/homepage');
     } else {
-      console.log("Senha ou Usuário Inválida!");
+      //console.log("Senha ou Usuário Inválida!");
+      alert('Senha ou Usuário Inválida!')
     }
   };
 

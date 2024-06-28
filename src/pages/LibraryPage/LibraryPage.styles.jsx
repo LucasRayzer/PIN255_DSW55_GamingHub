@@ -66,10 +66,28 @@ export const TrophySection = styled(Section).attrs({
   justify-content:space-between;
 `;
 
+export const SectionTitleDiv = styled.div.attrs({
+  className: "section-title-div"
+})`
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+`;
 export const SectionTitle = styled.h2.attrs({
   className: "section-title"
 })`
+ margin: 0 0 10px 0;
   color: #fff;
+  text-align: start;
+  font-size:24px;
+`;
+export const SectionTitleAux = styled.h2.attrs({
+  className: "section-title-aux"
+})`
+  margin: 0 0 10px 0;
+  color: #fff;
+  text-align: end;
+  font-size:18px;
 `;
 
 export const List = styled.div.attrs({

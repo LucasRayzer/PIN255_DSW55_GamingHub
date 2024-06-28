@@ -97,9 +97,11 @@ export default function GameDetailsPage() {
         }
       } else {
         console.error('Erro ao adicionar o jogo aos favoritos.');
+        alert('Erro ao Adicionar Jogo aos Favoritos')
       }
     } catch (error) {
       console.error('Erro ao adicionar o jogo aos favoritos:', error);
+      alert('Erro ao Adicionar Jogo aos Favoritos')
     }
   };
 

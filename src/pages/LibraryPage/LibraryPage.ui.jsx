@@ -21,7 +21,10 @@ import {
   TrophyContainer,
   SearchContainer,
   SearchInput,
-  SearchButton
+  SearchButton,
+  SectionTitleDiv,
+  SectionTitleAux
+  
 } from './LibraryPage.styles';
 import { NavHeader } from '../../components/HeaderMenu/HeaderMenu.ui';
 import AuthContext from '../../AuthContext';
@@ -164,7 +167,10 @@ export default function LibraryPage() {
         <ColumnsContainer>
           <LeftColumn>
             <Section>
-              <SectionTitle>Seus jogos {data.games.length}</SectionTitle>
+              <SectionTitleDiv>
+              <SectionTitle>Jogos na Biblioteca: {data.games.length}</SectionTitle>
+              <SectionTitleAux>Conquistas </SectionTitleAux>
+              </SectionTitleDiv>
               <List>
                 {data.games.map((game, index) => (
                   <ListItem key={index} onClick={() => handleItemClick(game.id)}>
@@ -202,12 +208,16 @@ export default function LibraryPage() {
             </TrophySection>
             <Section>
               <SectionTitle>Conquistas</SectionTitle>
-              <ConquestText>Rank: # {rank.rank}</ConquestText>
+              <ConquestText>Pontuação do Ranking de Jogador:  {rank.rank}</ConquestText>
               <ConquestText>Adquiridas: {data.acquiredAchievements}</ConquestText>
               <ConquestText>Total: {data.totalAchievements}</ConquestText>
             </Section>
             <Section>
+            <SectionTitleDiv>
               <SectionTitle>Jogos favoritos</SectionTitle>
+              <SectionTitleAux>Conquistas</SectionTitleAux>
+              </SectionTitleDiv>
+              
               <List>
                 {data.favorites.map((game, index) => (
                   <ListItem key={index} onClick={() => handleItemClick(game.id)}>

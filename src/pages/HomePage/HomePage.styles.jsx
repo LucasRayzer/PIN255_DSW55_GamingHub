@@ -49,13 +49,29 @@ export const TableWrapper = styled.div.attrs({
   color: white;
  
 `;
-
+export const TableTitleDiv = styled.div.attrs({
+  className: "table-title"
+})`
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+`;
 export const TableTitle = styled.h2.attrs({
   className: "table-title"
 })`
   margin: 0 0 10px 0;
   color: #fff;
   text-align: start;
+  font-size:24px;
+`;
+export const TableTitleAux = styled.h2.attrs({
+  className: "table-title"
+})`
+  margin: 0 0 10px 0;
+  color: #fff;
+  text-align: end;
+  font-size:18px;
+
 `;
 
 export const ListItem = styled.div.attrs({

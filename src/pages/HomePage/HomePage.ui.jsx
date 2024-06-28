@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { HomeBodyContainer, HomePageContainer, TablesContainer, TableRow, TableWrapper, TableTitle, ListItem, ItemImage, ItemText, ItemNumber, ItemImage2 } from './HomePage.styles';
+import { HomeBodyContainer, HomePageContainer, TablesContainer, TableRow, TableWrapper, TableTitle, ListItem, ItemImage, ItemText, ItemNumber, ItemImage2, TableTitleDiv, TableTitleAux } from './HomePage.styles';
 import { NavHeader } from '../../components/HeaderMenu/HeaderMenu.ui';
 import axios from 'axios';
 import AuthContext from '../../AuthContext';
@@ -91,7 +91,11 @@ export default function HomePage() {
         <TablesContainer>
           <TableRow>
             <TableWrapper>
+              <TableTitleDiv>
               <TableTitle>Jogos Mais Jogados</TableTitle>
+              <TableTitleAux>N° de Players Online</TableTitleAux>
+              </TableTitleDiv>
+              
               {topGames.map((game, index) => (
                 <ListItem key={index}>
                   <ItemImage src={`https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appId}/capsule_184x69.jpg`} alt={`Item ${index + 1}`} />
@@ -101,7 +105,11 @@ export default function HomePage() {
               ))}
             </TableWrapper>
             <TableWrapper>
+            <TableTitleDiv>
               <TableTitle>Top 5 por Conquistas Desbloqueadas</TableTitle>
+              <TableTitleAux>N° de Conquistas</TableTitleAux>
+              </TableTitleDiv>
+              
               {topGamesByAchievements.map((game, index) => (
                 <ListItem key={index}>
                   <ItemImage src={`https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appId}/capsule_184x69.jpg`} alt={`Item ${index + 1}`} />
@@ -113,7 +121,11 @@ export default function HomePage() {
           </TableRow>
           <TableRow>
             <TableWrapper>
+            <TableTitleDiv>
               <TableTitle>Top 5 por Tempo de Jogo</TableTitle>
+              <TableTitleAux>Horas de Jogo</TableTitleAux>
+              </TableTitleDiv>
+              
               {topGamesByPlaytime.map((game, index) => (
                 <ListItem key={index}>
                   <ItemImage src={`https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/${game.appId}/capsule_184x69.jpg`} alt={`Item ${index + 1}`} />
@@ -123,7 +135,11 @@ export default function HomePage() {
               ))}
             </TableWrapper>
             <TableWrapper>
-              <TableTitle>Top 5 Usuários por Ranking</TableTitle>
+            <TableTitleDiv>
+              <TableTitle>Ranking Top5</TableTitle>
+              <TableTitleAux>Pontuação</TableTitleAux>
+              </TableTitleDiv>
+             
               {topUsers.map((user, index) => (
                 <ListItem key={index}>
                   <ItemNumber>#{index+1}</ItemNumber>

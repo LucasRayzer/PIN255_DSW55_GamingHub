@@ -20,8 +20,13 @@ export default function RegisterPage() {
   const [apelido, setApelido] = useState('');
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleRegister = async () => {
+    if (senha !== confirmPassword) {
+      alert('As senhas não coincidem');
+      return;
+    }
     try {
       const response = await axios.post('http://localhost:8080/user/create', {
         apelido: apelido,
@@ -29,10 +34,12 @@ export default function RegisterPage() {
         senha: senha
       });
       if (response.status === 201) {
+        alert('Usuário Criado com Sucesso!')
         navigate('/login'); 
       }
     } catch (error) {
       console.error("Erro na criação de Usuário!", error);
+      alert('Erro na Criação de Usuário')
     }
   }
 
@@ -52,6 +59,7 @@ export default function RegisterPage() {
             />
           <RegisterInput type="text" placeholder="Usuário" maxLength={25} value={usuario} onChange={(e) => setUsuario(e.target.value)}/>
           <RegisterInput type="password" placeholder="Senha" maxLength={20} value={senha} onChange={(e) => setSenha(e.target.value)}/>
+          <RegisterInput type="password" placeholder="Confirme a senha" maxLength={20} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
           <RegisterButton onClick={handleRegister}>Cadastrar</RegisterButton>
           <RegisterLink onClick={() => navigate('/login')}>
             Já tem uma conta? Faça login

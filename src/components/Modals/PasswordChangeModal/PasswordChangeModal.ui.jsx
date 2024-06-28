@@ -24,7 +24,8 @@ export default function PasswordChangeModal({ isOpen, onClose }) {
       return;
     }
     setSenha();
-    console.log('Nova senha:', password);
+    //console.log('Nova senha:', password);
+    alert('Senha trocada com sucesso!')
     onClose();
   };
   // Renderiza o modal somente se `isOpen` for true
