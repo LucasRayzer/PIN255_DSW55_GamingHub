@@ -68,16 +68,16 @@ export function NavHeader({avatar}) {
         const now = new Date();
         const diffSeconds = Math.floor((now - lastAccess) / 1000);
         console.log("teste")
-        if (diffSeconds > 5 && authData.rank >0) {
+        if (diffSeconds > 30 && authData.rank >0) {
           const prego =await updateRank(authData.idU);
           setAuthData({ ...authData, rank: prego });
         }
       }
     };
 
-    const interval = setInterval(checkAndUpdateRank, 30000); // Check every 30 seconds
+    const interval = setInterval(checkAndUpdateRank, 30000); 
 
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval); 
   }, [authData.apelido, authData.idU]);
 
   return (
