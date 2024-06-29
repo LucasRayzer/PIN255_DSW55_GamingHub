@@ -19,9 +19,29 @@ const fetchUsersData = async () => {
   }
 };
 
+const fetchLastAccess = async (nomeUsuario) => {
+  try {
+    const response = await axios.get(`http://localhost:8080/acesso/user/${nomeUsuario}`);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao buscar último acesso do usuário', error);
+    return [];
+  }
+};
+
+const updateRank = async (id) => {
+  try {
+    const response = await axios.get(`http://localhost:8080/user/${id}/atualizaRank`);
+    console.log(response.data);
+    return response;
+  } catch (error) {
+    console.error('Erro ao atualizar o ranking do usuário', error);
+  }
+};
+
 export function NavHeader({avatar}) {
   const navigate = useNavigate();
-  const { authData } = useContext(AuthContext);
+  const { authData, setAuthData } = useContext(AuthContext);
   const [ranking, setRanking] = useState(0);
   const [userAvatar, setUserAvatar] = useState(defaultAvatar);
 
@@ -31,12 +51,6 @@ export function NavHeader({avatar}) {
       const sortedUsers = users.sort((a, b) => b.rank - a.rank);
       const userRank = sortedUsers.findIndex(user => user.usuarioId === authData.idU) + 1;
       setRanking(userRank);
-      // const user = users.find(user => user.usuarioId === authData.idU);
-      // if (user && user.imagem) {
-      //   setUserAvatar(user.imagem);
-      // } else {
-      //   setUserAvatar(defaultAvatar);
-      // }
       if (authData.avatar) {
         setUserAvatar(authData.avatar);
       } else {
@@ -44,7 +58,27 @@ export function NavHeader({avatar}) {
       }
     };
     getUsersData();
-  }, [authData.idU], [authData.avatar]);
+  }, [authData.idU, authData.avatar]);
+
+  useEffect(() => {
+    const checkAndUpdateRank = async () => {
+      const lastAccesses = await fetchLastAccess(authData.nomeUsuario);
+      if (lastAccesses.length > 0) {
+        const lastAccess = new Date(Math.max(...lastAccesses.map(access => new Date(access.dataAcesso))));
+        const now = new Date();
+        const diffSeconds = Math.floor((now - lastAccess) / 1000);
+        console.log("teste")
+        if (diffSeconds > 5 && authData.rank >0) {
+          const prego =await updateRank(authData.idU);
+          setAuthData({ ...authData, rank: prego });
+        }
+      }
+    };
+
+    const interval = setInterval(checkAndUpdateRank, 30000); // Check every 30 seconds
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [authData.apelido, authData.idU]);
 
   return (
     <HomeHeader>

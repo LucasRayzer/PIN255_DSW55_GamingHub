@@ -189,11 +189,19 @@ public class UsuarioController {
         return rank;
     }
     @GetMapping("/{id}/setRanking/{rank}")
-    public int setRanking(@PathVariable int id, @PathVariable int rank){
+    public double setRanking(@PathVariable int id, @PathVariable double rank){
         Usuario user = usuarioRepository.findById(id).get();
         user.setRank(rank);
         usuarioRepository.save(user);
         return rank;
+    }
+    @GetMapping("/{id}/atualizaRank")
+    public double atualRank(@PathVariable int id){
+        Usuario user = usuarioRepository.findById(id).get();
+        double temp = user.getRank();
+        user.setRank(temp+0.5);
+        usuarioRepository.save(user);
+        return user.getRank();
     }
     @GetMapping("{steamId}/imagemPerfil")
     public void setImagem(@PathVariable String steamId){

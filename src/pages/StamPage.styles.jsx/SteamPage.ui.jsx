@@ -24,6 +24,8 @@ async function execCom1(code) {
 
 async function execCom2(code) {
   try {
+    // const response = await axios.get(`http://localhost:8080/api/executeCommands2/${code}`);
+    // console.log(response)
     window.open(`http://localhost:8080/api/executeCommands2/${code}`, '_blank');
   } catch (error) {
     console.error('execCom2 error:', error);
@@ -42,7 +44,7 @@ export default function SteamPage() {
       const userResponse = await axios.get(`http://localhost:8080/user/${authData.idU}/${code}`);
       const exec1 = await execCom1(code);
       console.log('execCom1 completed:', exec1);
-      const exec2 = await execCom2(code);
+      //const exec2 = await execCom2(code);
       if (exec1 === "Funcionou") {
         console.log("roda isso aq", `http://localhost:8080/api/executeCommands2/${code}`)
         navigate(`/homepage`);

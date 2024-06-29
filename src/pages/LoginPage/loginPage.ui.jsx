@@ -30,7 +30,8 @@ export default function LoginPage() {
         apelido: response.data.apelido, 
         nomeUsuario: response.data.nomeUsuario, 
         senha: response.data.senha, 
-        steamId: response.data.steamId
+        steamId: response.data.steamId,
+        rank: response.data.rank
       });
       setCon(response.data.senha);
       return response.data.senha;
@@ -44,6 +45,7 @@ export default function LoginPage() {
     const confirmedSenha = await getSenhaC(usuario);
     console.log(senha, confirmedSenha)
     if (senha === confirmedSenha) {
+      const response = await axios.get(`http://localhost:8080/acesso/current/${usuario}`);
       navigate('/homepage');
     } else {
       //console.log("Senha ou Usuário Inválida!");

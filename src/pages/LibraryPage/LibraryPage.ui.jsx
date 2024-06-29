@@ -131,8 +131,10 @@ export default function LibraryPage() {
       setTrophies(trophyResult);
       const rankResult = await fetchRankData(authData.idU);
       setRank(rankResult);
+      if(authData.rank <=0 || authData.rank <=0){
       const resp = await axios.get(`http://localhost:8080/user/${authData.idU}/setRanking/${rankResult.rank}`);
       setAuthData({ ...authData, rank: resp.data });
+      }
     };
 
     getData();

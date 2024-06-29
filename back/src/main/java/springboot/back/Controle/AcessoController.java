@@ -30,6 +30,7 @@ public class AcessoController {
         Usuario usuario = usuarioRepository.findByNomeUsuario(nomeUsuario);
         Acesso acesso = new Acesso();
         acesso.setUsuario(usuario);
+        acesso.setNomeUsuario(nomeUsuario);
         acessoRepository.save(acesso);
         return acesso;
     }
@@ -37,6 +38,9 @@ public class AcessoController {
     public List<Acesso> loginUser(@PathVariable String nomeUsuario){
         Usuario usuario = usuarioRepository.findByNomeUsuario(nomeUsuario);
         List<Acesso> acesso= acessoRepository.findByUsuario(usuario);
+        for(Acesso acesso1 : acesso){
+            acesso1.setUsuario(null);
+        }
         return acesso;
     }
 }

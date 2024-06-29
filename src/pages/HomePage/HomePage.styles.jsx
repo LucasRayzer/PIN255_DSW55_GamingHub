@@ -97,8 +97,8 @@ export const ItemImage = styled.img.attrs({
 export const ItemImage2 = styled.img.attrs({
   className: "table-image"
 })`
-  width: 92px;
-  height: 92px;
+  width: 69px;
+  height: 69px;
   border-radius: 10%;
   margin-right: 10px;
   margin-left: 10px;

@@ -20,7 +20,7 @@ public class Usuario {
     private String apelido;
     private String senha;
     private String steamId;
-    private int rank;
+    private double rank;
     private String imagem;
     @OneToMany(mappedBy = "usuario")
     private List<Acesso> acessos;
@@ -92,11 +92,11 @@ public class Usuario {
         this.steamId = steamId;
     }
 
-    public int getRank() {
+    public double getRank() {
         return rank;
     }
 
-    public void setRank(int rank) {
+    public void setRank(double rank) {
         this.rank = rank;
     }
 
