@@ -65,7 +65,7 @@ export default function GameDetailsPage() {
         const average = notes.length > 0 ? (notes.reduce((a, b) => a + b, 0) / notes.length) : 'N/A';
         setAverageNote(average.toFixed(1));
       } catch (error) {
-        console.error("Erro ao buscar os dados do jogo:", error);
+        //console.error("Erro ao buscar os dados do jogo:", error);
       }
     };
 

@@ -68,7 +68,7 @@ export function NavHeader({avatar}) {
         const now = new Date();
         const diffSeconds = Math.floor((now - lastAccess) / 1000);
         console.log("teste")
-        if (diffSeconds > 30 && authData.rank >0) {
+        if (diffSeconds > 10 && authData.rank >0) {
           const prego =await updateRank(authData.idU);
           setAuthData({ ...authData, rank: prego });
         }

@@ -43,12 +43,10 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     const confirmedSenha = await getSenhaC(usuario);
-    console.log(senha, confirmedSenha)
     if (senha === confirmedSenha) {
       const response = await axios.get(`http://localhost:8080/acesso/current/${usuario}`);
       navigate('/homepage');
     } else {
-      //console.log("Senha ou Usuário Inválida!");
       alert('Senha ou Usuário Inválida!')
     }
   };
