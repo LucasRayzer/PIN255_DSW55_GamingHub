@@ -159,18 +159,24 @@ public class UsuarioController {
             throw new Exception("Usuario não foi encontrado");
     }
     @GetMapping("/nome/{username}/senha/{senha}")
-    public String setSenhaByNome(@PathVariable String username, @PathVariable String senha){
+    public Usuario setSenhaByNome(@PathVariable String username, @PathVariable String senha){
         Usuario usuario = usuarioRepository.findByNomeUsuario(username);
         usuario.setSenha(senha);
         usuarioRepository.save(usuario);
-        return usuario.getSenha();
+        usuario.setUsuarioId(null);
+        usuario.setAcessos(null);
+        usuario.setUsuarioJogos(null);
+        return usuario;
     }
     @GetMapping("/nome/{username}/apelido/{apelido}")
-    public String setApelidoByNome(@PathVariable String username, @PathVariable String apelido){
+    public Usuario setApelidoByNome(@PathVariable String username, @PathVariable String apelido){
         Usuario usuario = usuarioRepository.findByNomeUsuario(username);
         usuario.setApelido(apelido);
         usuarioRepository.save(usuario);
-        return usuario.getApelido();
+        usuario.setUsuarioId(null);
+        usuario.setAcessos(null);
+        usuario.setUsuarioJogos(null);
+        return usuario;
     }
     @GetMapping("/{id}/ranking")
     public AtomicInteger rankingUser(@PathVariable int id){
@@ -213,5 +219,15 @@ public class UsuarioController {
     public String setImagemF(@PathVariable String steamId){
         Usuario user = usuarioRepository.findBySteamId(steamId);
         return user.getImagem();
+    }
+    @GetMapping("nome/{username}/steamId/{steamId}")
+    public Usuario setSteamIdByNome(@PathVariable String username, @PathVariable String steamId){
+        Usuario user = usuarioRepository.findByNomeUsuario(username);
+        user.setSteamId(steamId);
+        usuarioRepository.save(user);
+        user.setUsuarioId(null);
+        user.setAcessos(null);
+        user.setUsuarioJogos(null);
+        return user;
     }
 }

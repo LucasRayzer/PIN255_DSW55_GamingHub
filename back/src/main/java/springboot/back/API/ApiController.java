@@ -33,7 +33,16 @@ public class ApiController {
     // 76561198332097264
     /*DROP SCHEMA public CASCADE;
     CREATE SCHEMA public;*/
-    //http://localhost:8080/api/executeCommands2/{steamId}
+
+    //http://192.168.1.28:8080/api/playerGames/76561198973296498
+    //http://192.168.1.28:8080/user/76561198973296498/imagemPerfil
+    //http://192.168.1.28:8080/api/deleteEmpty
+    //http://localhost:8080/api/executeCommands2/76561198973296498
+    //http://192.168.1.28:8080/api/set/76561198973296498
+    //http://192.168.1.28:8080/api/setTrofeus/76561198973296498
+    //http://192.168.1.28:8080/user/associar
+
+
 
     @GetMapping("/steamplayer/{steamId}")
     public Mono<ApiResponse> getSteamPlayerProfile(@PathVariable String steamId) {
